@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -18,7 +18,8 @@ import Dashboard from './pages/Dashboard';
 import Excercises from './pages/Exercises';
 import Excercise from './pages/Exercise';
 import Navigation from './components/Navigation';
-
+import AppContext from './contexts/AppContext';
+import exercisesReducer from "./reducers/exercisesReducer"
 
 
 const App = () => {
@@ -112,70 +113,77 @@ const App = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+    const [exercises, exercisesDispatch] = useReducer(exercisesReducer, [])
+
     return (
         <div className={classes.root}>
-            <BrowserRouter>
-                <AppBar
-                    position="absolute"
-                    className={clsx(classes.appBar, isDrawerOpen && classes.appBarShift)}
-                >
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={() => setIsDrawerOpen(true)}
-                            className={clsx(
-                                classes.menuButton,
-                                isDrawerOpen && classes.menuButtonHidden,
-                            )}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography
-                            component="h1"
-                            variant="h5"
-                            color="inherit"
-                            noWrap
-                            className={classes.title}
-                        >
-                            Weights Tracker
+            <AppContext.Provider value={{
+                exercises,
+                exercisesDispatch
+            }} >
+                <BrowserRouter>
+                    <AppBar
+                        position="absolute"
+                        className={clsx(classes.appBar, isDrawerOpen && classes.appBarShift)}
+                    >
+                        <Toolbar className={classes.toolbar}>
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={() => setIsDrawerOpen(true)}
+                                className={clsx(
+                                    classes.menuButton,
+                                    isDrawerOpen && classes.menuButtonHidden,
+                                )}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography
+                                component="h1"
+                                variant="h5"
+                                color="inherit"
+                                noWrap
+                                className={classes.title}
+                            >
+                                Weights Tracker
           </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    variant="permanent"
-                    classes={{
-                        paper: clsx(classes.drawerPaper, !isDrawerOpen && classes.drawerPaperClose),
-                    }}
-                    open={isDrawerOpen}
-                >
-                    <div className={classes.toolbarIcon}>
-                        <IconButton onClick={() => setIsDrawerOpen(false)}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <Navigation />
-                </Drawer>
-                <main className={classes.content}>
-                    <div className={classes.appBarSpacer} />
-                    <Container maxWidth="lg" className={classes.container}>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        variant="permanent"
+                        classes={{
+                            paper: clsx(classes.drawerPaper, !isDrawerOpen && classes.drawerPaperClose),
+                        }}
+                        open={isDrawerOpen}
+                    >
+                        <div className={classes.toolbarIcon}>
+                            <IconButton onClick={() => setIsDrawerOpen(false)}>
+                                <ChevronLeftIcon />
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <Navigation />
+                    </Drawer>
+                    <main className={classes.content}>
+                        <div className={classes.appBarSpacer} />
+                        <Container maxWidth="lg" className={classes.container}>
 
-                        <Switch>
-                            <Route exact path="/">
-                                <Dashboard />
-                            </Route>
-                            <Route exact path="/exercises">
-                                <Excercises />
-                            </Route>
-                            <Route exact path="/exercise/:id">
-                                <Excercise />
-                            </Route>
-                        </Switch>
-                    </Container>
-                </main>
-            </BrowserRouter>
+                            <Switch>
+                                <Route exact path="/">
+                                    <Dashboard />
+                                </Route>
+                                <Route exact path="/exercises">
+                                    <Excercises />
+                                </Route>
+                                <Route exact path="/exercise/:id">
+                                    <Excercise />
+                                </Route>
+                            </Switch>
+                        </Container>
+                    </main>
+                </BrowserRouter>
+            </AppContext.Provider >
         </div>
     );
 }
