@@ -3,13 +3,32 @@ axios.defaults.baseURL = "http://127.0.0.1:3000"
 
 
 export const addExercise = (data) => {
-
-    return axios.post("/createExercise", {
+    return axios.post("/addExercise", {
         ...data
     })
 }
 
+export const finishAddExercise = (data) => ({
+    type: "ADD_EXERCISE",
+    data
+})
+
 export const getExercises = () => {
-    console.log("req")
     return axios.get("/getExercises")
 }
+
+export const finishGetExercises = (data) => ({
+    type: "GET_EXERCISES",
+    data
+})
+
+export const deleteExercise = (data) => {
+    return axios.post("/deleteExercise", {
+        ...data
+    })
+}
+
+export const finishDeleteExercise = (data) => ({
+    type: "DELETE_EXERCISE",
+    data
+})

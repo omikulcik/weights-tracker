@@ -2,18 +2,15 @@ import React, { useState, useReducer } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Excercises from './pages/Exercises';
 import Excercise from './pages/Exercise';
@@ -104,14 +101,10 @@ const App = () => {
             display: 'flex',
             overflow: 'auto',
             flexDirection: 'column',
-        },
-        fixedHeight: {
-            height: 240,
-        },
+        }
     }));
     const classes = useStyles();
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     const [exercises, exercisesDispatch] = useReducer(exercisesReducer, [])
 

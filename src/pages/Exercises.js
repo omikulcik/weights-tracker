@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useContext } from "react"
 import { Grid, Typography, Button, CircularProgress } from "@material-ui/core"
 import ExerciseCard from "../components/ExerciseCard"
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { makeStyles } from "@material-ui/styles";
 import AddExerciseModal from "../components/AddExerciseModal";
-import { getExercises } from "../actions/exercisesActions";
+import { finishGetExercises, getExercises } from "../actions/exercisesActions";
 import AppContext from "../contexts/AppContext";
 import useRequest from '@ahooksjs/use-request';
 
@@ -36,11 +36,7 @@ const Excercises = () => {
     const { exercises, exercisesDispatch } = useContext(AppContext)
 
     const { loading: isExercisesLoading } = useRequest(getExercises, {
-        manual: false,
-        onSuccess: (result) => exercisesDispatch({
-            type: "GET_EXERCISES",
-            data: result.data
-        })
+        onSuccess: (result) => exercisesDispatch(finishGetExercises(result.data))
     })
 
 

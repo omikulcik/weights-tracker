@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useContext } from "react"
 import { makeStyles } from "@material-ui/core/styles"
-import { Modal, Paper, TextField, Button } from "@material-ui/core"
+import { Modal, Paper, TextField, Button, CircularProgress } from "@material-ui/core"
 import { useForm, Controller } from "react-hook-form";
-import { addExercise } from "../actions/exercisesActions"
+import { addExercise, finishAddExercise } from "../actions/exercisesActions"
+import useRequest from "@ahooksjs/use-request";
+import AppContext from "../contexts/AppContext";
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -17,13 +19,16 @@ const useStyles = makeStyles((theme) => ({
 const AddExerciseModal = (props) => {
 
 
-
+    const { exercisesDispatch } = useContext(AppContext)
     const classes = useStyles()
-    const { register, handleSubmit, control } = useForm()
+    const { handleSubmit, control } = useForm()
+    const { loading: isExerciseAdding, run: requestAddExercise } = useRequest(addExercise, {
+        manual: true,
+        onSuccess: (res) => exercisesDispatch(finishAddExercise(res.data))
+    })
 
     const handleCreateNewExercise = (data) => {
-        console.log(data)
-        addExercise({
+        requestAddExercise({
             name: data.exerciseName
         })
     }
@@ -37,21 +42,25 @@ const AddExerciseModal = (props) => {
             className={classes.modal}
         >
             <Paper className={classes.paper}>
-                <form onSubmit={handleSubmit(handleCreateNewExercise)}>
+                {
+                    isExerciseAdding ?
+                        <CircularProgress /> :
+                        <form onSubmit={handleSubmit(handleCreateNewExercise)}>
 
-                    <Controller
-                        as={<TextField />}
-                        name="exerciseName"
-                        control={control}
-                        defaultValue=""
-                        label="Exercise name"
-                    />
-                    <Button
-                        type="submit"
-                    >
-                        Odeslat
+                            <Controller
+                                as={<TextField />}
+                                name="exerciseName"
+                                control={control}
+                                defaultValue=""
+                                label="Exercise name"
+                            />
+                            <Button
+                                type="submit"
+                            >
+                                Odeslat
                         </Button>
-                </form>
+                        </form>
+                }
             </Paper>
         </Modal>
     )
