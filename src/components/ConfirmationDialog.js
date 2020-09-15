@@ -1,4 +1,5 @@
 import { Button, CircularProgress, Dialog, DialogActions, DialogTitle } from "@material-ui/core"
+import { Alert } from "@material-ui/lab"
 import React from "react"
 
 
@@ -14,14 +15,18 @@ const ConfirmationDialog = (props) => {
             {
                 props.isConfirmationInProgress ?
                     <CircularProgress /> :
-                    <DialogActions>
-                        <Button onClick={props.handleClose} color="primary">
-                            Ne
+                    props.confirmationError ?
+                        <Alert severity="error">
+                            Něco se nepovedlo, zkuste to prosím znovu.
+                        </Alert> :
+                        <DialogActions>
+                            <Button onClick={props.handleClose} color="primary">
+                                Ne
                         </Button>
-                        <Button onClick={props.handleConfirmation} color="primary" autoFocus>
-                            Ano
+                            <Button onClick={props.handleConfirmation} color="primary" autoFocus>
+                                Ano
                         </Button>
-                    </DialogActions>
+                        </DialogActions>
             }
         </Dialog>
     )

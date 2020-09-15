@@ -7,6 +7,7 @@ import AddExerciseModal from "../components/AddExerciseModal";
 import { finishGetExercises, getExercises } from "../actions/exercisesActions";
 import AppContext from "../contexts/AppContext";
 import useRequest from '@ahooksjs/use-request';
+import { Alert } from "@material-ui/lab";
 
 
 
@@ -32,11 +33,12 @@ const Excercises = () => {
     const classes = styles()
 
     const [isModalOpen, setIsModalOpen] = useState(false)
-
+    const [hasExercisesLoadingError, setHasExercisesLoadingError] = useState(false)
     const { exercises, exercisesDispatch } = useContext(AppContext)
 
     const { loading: isExercisesLoading } = useRequest(getExercises, {
-        onSuccess: (result) => exercisesDispatch(finishGetExercises(result.data))
+        onSuccess: (result) => exercisesDispatch(finishGetExercises(result.data)),
+        onError: () => setHasExercisesLoadingError(true)
     })
 
 
@@ -61,11 +63,15 @@ const Excercises = () => {
             {
                 isExercisesLoading ?
                     <CircularProgress className={classes.spinner} /> :
-                    exercises.map(exercise =>
-                        <ExerciseCard
-                            key={exercise.id}
-                            {...exercise}
-                        />)
+                    hasExercisesLoadingError ?
+                        <Alert severity="error">
+                            Něco se pokazilo, zkuste to prosím znovu.
+                        </Alert> :
+                        exercises.map(exercise =>
+                            <ExerciseCard
+                                key={exercise.id}
+                                {...exercise}
+                            />)
             }
             <AddExerciseModal
                 isModalOpen={isModalOpen}

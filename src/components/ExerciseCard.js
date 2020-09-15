@@ -42,10 +42,12 @@ const ExerciseCard = (props) => {
 
     const { exercisesDispatch } = useContext(AppContext)
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+    const [hasDeletionError, setHasDeletionError] = useState(false)
 
     const { loading: isExerciseDeleting, run: requestExerciseDeletion } = useRequest(deleteExercise, {
         manual: true,
-        onSuccess: () => exercisesDispatch(finishDeleteExercise({ id: props.id }))
+        onSuccess: () => exercisesDispatch(finishDeleteExercise({ id: props.id })),
+        onError: () => hasDeletionError(true)
     })
 
     return (
@@ -68,6 +70,7 @@ const ExerciseCard = (props) => {
                     handleClose={() => setIsDeleteDialogOpen(false)}
                     dialogText={`Opravdu si přejete smazat cvik s názvem ${props.name}`}
                     isConfirmationInProgress={isExerciseDeleting}
+                    confirmationError={hasDeletionError}
                 />
             </Card>
         </Grid>
