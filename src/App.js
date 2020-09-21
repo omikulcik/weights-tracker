@@ -17,6 +17,7 @@ import Excercise from './pages/Exercise';
 import Navigation from './components/Navigation';
 import AppContext from './contexts/AppContext';
 import exercisesReducer from "./reducers/exercisesReducer"
+import recordsReducer from './reducers/recordsReducer';
 
 
 const App = () => {
@@ -107,12 +108,15 @@ const App = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
     const [exercises, exercisesDispatch] = useReducer(exercisesReducer, [])
+    const [records, recordsDispatch] = useReducer(recordsReducer, [])
 
     return (
         <div className={classes.root}>
             <AppContext.Provider value={{
                 exercises,
-                exercisesDispatch
+                exercisesDispatch,
+                records,
+                recordsDispatch
             }} >
                 <BrowserRouter>
                     <AppBar

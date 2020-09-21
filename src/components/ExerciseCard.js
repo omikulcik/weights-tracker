@@ -47,7 +47,7 @@ const ExerciseCard = (props) => {
     const { loading: isExerciseDeleting, run: requestExerciseDeletion } = useRequest(deleteExercise, {
         manual: true,
         onSuccess: () => exercisesDispatch(finishDeleteExercise({ id: props.id })),
-        onError: () => hasDeletionError(true)
+        onError: () => setHasDeletionError(true)
     })
 
     return (
