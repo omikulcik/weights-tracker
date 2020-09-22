@@ -26,7 +26,10 @@ const AddExerciseModal = (props) => {
     const [hasError, setHasError] = useState(false)
     const { loading: isExerciseAdding, run: requestAddExercise } = useRequest(addExercise, {
         manual: true,
-        onSuccess: (res) => exercisesDispatch(finishAddExercise(res.data)),
+        onSuccess: (res) => {
+            exercisesDispatch(finishAddExercise(res.data))
+            props.setIsModalOpen(false)
+        },
         onError: () => setHasError(true)
     })
 
@@ -60,6 +63,7 @@ const AddExerciseModal = (props) => {
                                     control={control}
                                     defaultValue=""
                                     label="Exercise name"
+                                    autoFocus
                                 />
                                 <Button
                                     type="submit"

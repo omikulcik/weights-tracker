@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@material-ui/core"
+import { Button, Grid, Paper, Table, TableCell, TableContainer, TableHead, Typography, TableBody, TableRow } from "@material-ui/core"
 import React, { useContext, useState } from "react"
 import { useParams } from "react-router-dom"
 import AppContext from "../contexts/AppContext"
@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/styles";
 import AddRecordModal from "../components/AddRecordModal";
 import useRequest from "@ahooksjs/use-request";
 import { finishGetRecords, getRecords } from "../actions/recordsActions";
+import Record from "../components/Record";
 
 
 const Excercise = () => {
@@ -49,10 +50,36 @@ const Excercise = () => {
                 </Button>
                 </Grid>
             </Grid>
-            <Grid container>
-                {
-                    records.map((rec) => <Grid item>{rec.id}</Grid>)
-                }
+            <Grid container spacing={3}>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    Datum
+                                </TableCell>
+                                <TableCell>
+                                    Váha
+                                </TableCell>
+                                <TableCell>
+                                    Reps
+                                </TableCell>
+                                <TableCell>
+                                    Series
+                                </TableCell>
+                                <TableCell>
+                                    Note
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                records.map((rec) => <Record key={rec.id} {...rec} />)
+                            }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
             </Grid>
             <AddRecordModal
                 open={isAddRecordModalOpen}

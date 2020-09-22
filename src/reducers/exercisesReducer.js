@@ -4,8 +4,8 @@ const exercisesReducer = (state, action) => {
             return action.data
         case "ADD_EXERCISE":
             return [
-                ...state,
-                action.data
+                action.data,
+                ...state
             ]
         case "DELETE_EXERCISE":
             return state.filter((exercise) => exercise.id !== action.data.id)
