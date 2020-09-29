@@ -1,23 +1,19 @@
 import React, { useState, useReducer } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import Excercises from './pages/Exercises';
-import Excercise from './pages/Exercise';
-import Navigation from './components/Navigation';
 import AppContext from './contexts/AppContext';
 import exercisesReducer from "./reducers/exercisesReducer"
 import recordsReducer from './reducers/recordsReducer';
+import AppRouter from './routers/AppRouter';
+import { CookiesProvider, useCookies } from 'react-cookie';
+import { authStatus } from './actions/userActions';
+import useRequest from '@ahooksjs/use-request';
+import { useHistory } from 'react-router';
 
 
 const App = () => {
@@ -30,15 +26,8 @@ const App = () => {
         toolbar: {
             paddingRight: 24,
         },
-        toolbarIcon: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            padding: '0 8px',
-            ...theme.mixins.toolbar,
-        },
         appBar: {
-            zIndex: theme.zIndex.drawer + 1,
+            zIndex: theme.zIndex.drawer,
             transition: theme.transitions.create(['width', 'margin'], {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
@@ -62,66 +51,40 @@ const App = () => {
             flexGrow: 1,
             textAlign: "center",
             fontWeight: "bold",
-        },
-        drawerPaper: {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-        },
-        drawerPaperClose: {
-            overflowX: 'hidden',
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            width: theme.spacing(7),
-            [theme.breakpoints.up('sm')]: {
-                width: theme.spacing(9),
-            },
-        },
-        appBarSpacer: theme.mixins.toolbar,
-        content: {
-            backgroundColor:
-                theme.palette.type === 'light'
-                    ? theme.palette.grey[100]
-                    : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-        },
-        container: {
-            paddingTop: theme.spacing(4),
-            paddingBottom: theme.spacing(4),
-        },
-        paper: {
-            padding: theme.spacing(2),
-            display: 'flex',
-            overflow: 'auto',
-            flexDirection: 'column',
         }
     }));
-    const classes = useStyles();
-    const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
+
+    const classes = useStyles()
     const [exercises, exercisesDispatch] = useReducer(exercisesReducer, [])
     const [records, recordsDispatch] = useReducer(recordsReducer, [])
+    const [user, setUser] = useState()
+    const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+    const [cookies] = useCookies()
+    useRequest(authStatus, {
+        defaultParams: {
+            token: cookies.token
+        },
+        onSuccess: (res) => {
+            setUser(res.data)
+        },
+        onError: () => setUser(null)
+    })
 
     return (
         <div className={classes.root}>
-            <AppContext.Provider value={{
-                exercises,
-                exercisesDispatch,
-                records,
-                recordsDispatch
-            }} >
-                <BrowserRouter>
+            <CookiesProvider>
+                <AppContext.Provider value={{
+                    exercises,
+                    exercisesDispatch,
+                    records,
+                    recordsDispatch,
+                    user,
+                    setUser
+                }} >
                     <AppBar
                         position="absolute"
-                        className={clsx(classes.appBar, isDrawerOpen && classes.appBarShift)}
+                        className={clsx(classes.appBar, user && isDrawerOpen && classes.appBarShift)}
                     >
                         <Toolbar className={classes.toolbar}>
                             <IconButton
@@ -144,43 +107,16 @@ const App = () => {
                                 className={classes.title}
                             >
                                 Weights Tracker
-          </Typography>
+                            </Typography>
                         </Toolbar>
                     </AppBar>
-                    <Drawer
-                        variant="permanent"
-                        classes={{
-                            paper: clsx(classes.drawerPaper, !isDrawerOpen && classes.drawerPaperClose),
-                        }}
-                        open={isDrawerOpen}
-                    >
-                        <div className={classes.toolbarIcon}>
-                            <IconButton onClick={() => setIsDrawerOpen(false)}>
-                                <ChevronLeftIcon />
-                            </IconButton>
-                        </div>
-                        <Divider />
-                        <Navigation />
-                    </Drawer>
-                    <main className={classes.content}>
-                        <div className={classes.appBarSpacer} />
-                        <Container maxWidth="lg" className={classes.container}>
-
-                            <Switch>
-                                <Route exact path="/">
-                                    <Dashboard />
-                                </Route>
-                                <Route exact path="/exercises">
-                                    <Excercises />
-                                </Route>
-                                <Route exact path="/exercise/:id">
-                                    <Excercise />
-                                </Route>
-                            </Switch>
-                        </Container>
-                    </main>
-                </BrowserRouter>
-            </AppContext.Provider >
+                    <AppRouter
+                        isDrawerOpen={isDrawerOpen}
+                        setIsDrawerOpen={setIsDrawerOpen}
+                        user={user}
+                    />
+                </AppContext.Provider >
+            </CookiesProvider>
         </div>
     );
 }

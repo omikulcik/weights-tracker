@@ -20,6 +20,7 @@
     "fontsource-roboto": "^3.0.3",
     "moment": "^2.29.0",
     "react": "^16.13.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.7.2",
     "react-router": "^5.2.0",

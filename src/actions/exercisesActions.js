@@ -13,8 +13,13 @@ export const finishAddExercise = (data) => ({
     data
 })
 
-export const getExercises = () => {
-    return axios.get("/getExercises")
+export const getExercises = (data) => {
+    console.log(data)
+    return axios.get("/getExercises", {
+        params: {
+            ...data
+        }
+    })
 }
 
 export const finishGetExercises = (data) => ({

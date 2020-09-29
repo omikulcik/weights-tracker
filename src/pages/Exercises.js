@@ -8,6 +8,7 @@ import { finishGetExercises, getExercises } from "../actions/exercisesActions";
 import AppContext from "../contexts/AppContext";
 import useRequest from '@ahooksjs/use-request';
 import { Alert } from "@material-ui/lab";
+import { useCookies } from "react-cookie";
 
 
 
@@ -35,10 +36,14 @@ const Excercises = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [hasExercisesLoadingError, setHasExercisesLoadingError] = useState(false)
     const { exercises, exercisesDispatch } = useContext(AppContext)
+    const [cookies] = useCookies()
 
     const { loading: isExercisesLoading } = useRequest(getExercises, {
         onSuccess: (result) => exercisesDispatch(finishGetExercises(result.data)),
-        onError: () => setHasExercisesLoadingError(true)
+        onError: () => setHasExercisesLoadingError(true),
+        defaultParams: {
+            token: cookies.token
+        }
     })
 
 
