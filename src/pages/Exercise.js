@@ -75,7 +75,7 @@ const Excercise = () => {
                                             Series
                                 </TableCell>
                                         <TableCell>
-                                            Note
+                                            Delete
                                 </TableCell>
                                     </TableRow>
                                 </TableHead>

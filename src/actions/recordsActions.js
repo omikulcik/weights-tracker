@@ -25,3 +25,14 @@ export const finishGetRecords = (data) => ({
     type: "GET_RECORDS",
     data
 })
+
+export const deleteRecord = (data, token) => {
+    return axios.post("/deleteRecord", data, {
+        headers: makeHeaders(token)
+    })
+}
+
+export const finishDeleteRecord = (data) => ({
+    type: "DELETE_RECORD",
+    data
+})

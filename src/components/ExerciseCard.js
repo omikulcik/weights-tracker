@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react"
-import { Grid, Card, CardContent, Button, Typography } from "@material-ui/core"
+import { Grid, Card, CardContent, Button, Typography, IconButton } from "@material-ui/core"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from "@material-ui/styles"
@@ -33,8 +33,8 @@ const ExerciseCard = (props) => {
         },
         deleteIcon: {
             position: "absolute",
-            top: "1rem",
-            right: "1rem",
+            top: "0.5rem",
+            right: "0.6rem",
             cursor: "pointer"
         }
     }))
@@ -56,7 +56,9 @@ const ExerciseCard = (props) => {
         <Grid item lg={3}>
             <Card>
                 <CardContent className={classes.cardContent}>
-                    <DeleteIcon className={classes.deleteIcon} onClick={() => setIsDeleteDialogOpen(true)} />
+                    <IconButton className={classes.deleteIcon} onClick={() => setIsDeleteDialogOpen(true)} >
+                        <DeleteIcon />
+                    </IconButton>
                     <Typography component="h3" variant="h6" className={classes.exerciseName}>
                         {props.name}
                     </Typography>
