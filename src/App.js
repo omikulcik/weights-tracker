@@ -13,7 +13,6 @@ import AppRouter from './routers/AppRouter';
 import { CookiesProvider, useCookies } from 'react-cookie';
 import { authStatus } from './actions/userActions';
 import useRequest from '@ahooksjs/use-request';
-import { useHistory } from 'react-router';
 
 
 const App = () => {

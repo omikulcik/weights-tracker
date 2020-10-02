@@ -1,5 +1,5 @@
 import axios from "axios"
-
+import makeHeaders from "../utils/makeHeaders"
 
 export const logIn = (data) => {
     return axios.post("/users/login", {
@@ -8,7 +8,7 @@ export const logIn = (data) => {
 }
 
 export const authStatus = (data) => {
-    return axios.post("/users/authStatus", {
-        ...data
+    return axios.post("/users/authStatus", null, {
+        headers: makeHeaders(data.token)
     })
 }

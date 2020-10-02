@@ -12,7 +12,7 @@ const Login = () => {
 
     const { control, handleSubmit } = useForm()
     const { setUser, user } = useContext(AppContext)
-    const [undefined, setCookie] = useCookies()
+    const [, setCookie] = useCookies()
     const history = useHistory()
     const { run: requestLogin } = useRequest(logIn, {
         manual: true,

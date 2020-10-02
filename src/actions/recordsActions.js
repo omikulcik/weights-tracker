@@ -1,8 +1,9 @@
 import axios from "axios"
+import makeHeaders from "../utils/makeHeaders"
 
-export const addRecord = (data) => {
-    return axios.post("/addRecord", {
-        ...data
+export const addRecord = (data, token) => {
+    return axios.post("/addRecord", data, {
+        headers: makeHeaders(token)
     })
 }
 
@@ -14,8 +15,9 @@ export const finishAddRecord = (data) => ({
 export const getRecords = (data) => {
     return axios.get("/getRecords", {
         params: {
-            ...data
-        }
+            exerciseId: data.exerciseId
+        },
+        headers: makeHeaders(data.token)
     })
 }
 

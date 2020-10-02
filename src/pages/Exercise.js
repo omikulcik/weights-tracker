@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, Table, TableCell, TableContainer, TableHead, Typography, TableBody, TableRow } from "@material-ui/core"
+import { Button, Grid, Paper, Table, TableCell, TableContainer, TableHead, Typography, TableBody, TableRow, CircularProgress } from "@material-ui/core"
 import React, { useContext, useState } from "react"
 import { useParams } from "react-router-dom"
 import AppContext from "../contexts/AppContext"
@@ -8,12 +8,14 @@ import AddRecordModal from "../components/AddRecordModal";
 import useRequest from "@ahooksjs/use-request";
 import { finishGetRecords, getRecords } from "../actions/recordsActions";
 import Record from "../components/Record";
+import { useCookies } from "react-cookie";
 
 
 const Excercise = () => {
 
     const { exercises, records, recordsDispatch } = useContext(AppContext)
     let { id } = useParams();
+    const [cookies] = useCookies()
     const exc = exercises.find(e => e.id === parseInt(id))
     const styles = makeStyles(theme => ({
         addBtn: {
@@ -25,7 +27,8 @@ const Excercise = () => {
     const [isAddRecordModalOpen, setIsAddRecordModalOpen] = useState(false)
     const { loading: isRecordsLoading } = useRequest(getRecords, {
         defaultParams: {
-            exerciseId: parseInt(id)
+            exerciseId: parseInt(id),
+            token: cookies.token
         },
         onSuccess: (result) => recordsDispatch(finishGetRecords(result.data))
     })
@@ -51,35 +54,39 @@ const Excercise = () => {
                 </Grid>
             </Grid>
             <Grid container spacing={3}>
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>
-                                    Datum
+                {
+                    isRecordsLoading ?
+                        <CircularProgress />
+                        :
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                            Datum
                                 </TableCell>
-                                <TableCell>
-                                    Váha
+                                        <TableCell>
+                                            Váha
                                 </TableCell>
-                                <TableCell>
-                                    Reps
+                                        <TableCell>
+                                            Reps
                                 </TableCell>
-                                <TableCell>
-                                    Series
+                                        <TableCell>
+                                            Series
                                 </TableCell>
-                                <TableCell>
-                                    Note
+                                        <TableCell>
+                                            Note
                                 </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                records.map((rec) => <Record key={rec.id} {...rec} />)
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        records.map((rec) => <Record key={rec.id} {...rec} />)
+                                    }
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                }
             </Grid>
             <AddRecordModal
                 open={isAddRecordModalOpen}

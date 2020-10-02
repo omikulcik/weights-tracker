@@ -6,6 +6,7 @@ import { addExercise, finishAddExercise } from "../actions/exercisesActions"
 import useRequest from "@ahooksjs/use-request";
 import AppContext from "../contexts/AppContext";
 import { Alert } from "@material-ui/lab";
+import { useCookies } from "react-cookie";
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -24,6 +25,7 @@ const AddExerciseModal = (props) => {
     const classes = useStyles()
     const { handleSubmit, control } = useForm()
     const [hasError, setHasError] = useState(false)
+    const [cookies] = useCookies()
     const { loading: isExerciseAdding, run: requestAddExercise } = useRequest(addExercise, {
         manual: true,
         onSuccess: (res) => {
@@ -36,7 +38,7 @@ const AddExerciseModal = (props) => {
     const handleCreateNewExercise = (data) => {
         requestAddExercise({
             name: data.exerciseName
-        })
+        }, cookies.token)
     }
 
     return (

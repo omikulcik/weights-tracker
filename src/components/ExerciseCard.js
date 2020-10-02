@@ -8,6 +8,7 @@ import useRequest from "@ahooksjs/use-request";
 import { deleteExercise, finishDeleteExercise } from "../actions/exercisesActions";
 import AppContext from "../contexts/AppContext"
 import ConfirmationDialog from "./ConfirmationDialog";
+import { useCookies } from "react-cookie";
 
 const ExerciseCard = (props) => {
 
@@ -43,6 +44,7 @@ const ExerciseCard = (props) => {
     const { exercisesDispatch } = useContext(AppContext)
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
     const [hasDeletionError, setHasDeletionError] = useState(false)
+    const [cookies] = useCookies()
 
     const { loading: isExerciseDeleting, run: requestExerciseDeletion } = useRequest(deleteExercise, {
         manual: true,
@@ -65,7 +67,7 @@ const ExerciseCard = (props) => {
                     </Link>
                 </CardContent>
                 <ConfirmationDialog
-                    handleConfirmation={() => requestExerciseDeletion({ id: props.id })}
+                    handleConfirmation={() => requestExerciseDeletion({ id: props.id }, cookies.token)}
                     open={isDeleteDialogOpen}
                     handleClose={() => setIsDeleteDialogOpen(false)}
                     dialogText={`Opravdu si přejete smazat cvik s názvem ${props.name}`}

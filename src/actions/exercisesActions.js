@@ -1,10 +1,11 @@
 import axios from "axios"
+import makeHeaders from "../utils/makeHeaders"
 axios.defaults.baseURL = "http://127.0.0.1:3000"
 
 
-export const addExercise = (data) => {
-    return axios.post("/addExercise", {
-        ...data
+export const addExercise = (data, token) => {
+    return axios.post("/addExercise", data, {
+        headers: makeHeaders(token)
     })
 }
 
@@ -16,9 +17,7 @@ export const finishAddExercise = (data) => ({
 export const getExercises = (data) => {
     console.log(data)
     return axios.get("/getExercises", {
-        params: {
-            ...data
-        }
+        headers: makeHeaders(data.token)
     })
 }
 
@@ -27,9 +26,9 @@ export const finishGetExercises = (data) => ({
     data
 })
 
-export const deleteExercise = (data) => {
-    return axios.post("/deleteExercise", {
-        ...data
+export const deleteExercise = (data, token) => {
+    return axios.post("/deleteExercise", data, {
+        headers: makeHeaders(token)
     })
 }
 
