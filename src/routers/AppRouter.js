@@ -8,6 +8,7 @@ import Login from "../pages/Login";
 import Navigation from "../components/Navigation";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from '@material-ui/core/Container';
+import Register from "../pages/Register";
 
 const AppRouter = (props) => {
 
@@ -52,6 +53,9 @@ const AppRouter = (props) => {
                         </PrivateRoute>
                         <Route exact path="/login">
                             <Login />
+                        </Route>
+                        <Route exact path="/register">
+                            <Register />
                         </Route>
                     </Switch>
                 </Container>

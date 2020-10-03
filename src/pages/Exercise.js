@@ -34,7 +34,7 @@ const Excercise = () => {
     })
 
     return (
-        <div>
+        <>
             <Grid container>
                 <Grid item lg={12}>
                     <Typography
@@ -93,7 +93,7 @@ const Excercise = () => {
                 setIsOpen={setIsAddRecordModalOpen}
                 exerciseId={parseInt(id)}
             />
-        </div>
+        </>
     )
 }
 

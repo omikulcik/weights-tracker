@@ -13,6 +13,8 @@ import AppRouter from './routers/AppRouter';
 import { CookiesProvider, useCookies } from 'react-cookie';
 import { authStatus } from './actions/userActions';
 import useRequest from '@ahooksjs/use-request';
+import PersonIcon from '@material-ui/icons/Person';
+import UserMenu from './components/UserMenu';
 
 
 const App = () => {
@@ -59,7 +61,13 @@ const App = () => {
     const [records, recordsDispatch] = useReducer(recordsReducer, [])
     const [user, setUser] = useState()
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-    const [cookies] = useCookies()
+    const [cookies, , removeCookie] = useCookies()
+    const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null)
+
+    const handleCloseUserMenu = () => {
+        setUserMenuAnchorEl(null)
+    }
+
     useRequest(authStatus, {
         defaultParams: {
             token: cookies.token
@@ -67,7 +75,10 @@ const App = () => {
         onSuccess: (res) => {
             setUser(res.data)
         },
-        onError: () => setUser(null)
+        onError: () => {
+            removeCookie("token")
+            setUser(null)
+        }
     })
 
     return (
@@ -107,6 +118,20 @@ const App = () => {
                             >
                                 Weights Tracker
                             </Typography>
+                            {
+                                user &&
+                                <IconButton
+                                    edge="end"
+                                    color="inherit"
+                                    onClick={(e) => setUserMenuAnchorEl(e.currentTarget)}
+                                >
+                                    <PersonIcon />
+                                </IconButton>}
+                            <UserMenu
+                                anchorEl={userMenuAnchorEl}
+                                handleClose={handleCloseUserMenu}
+                                setUser={setUser}
+                            />
                         </Toolbar>
                     </AppBar>
                     <AppRouter

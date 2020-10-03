@@ -71,7 +71,7 @@ const AddExerciseModal = (props) => {
                                     type="submit"
                                 >
                                     Odeslat
-                        </Button>
+                                </Button>
                             </form>
                 }
             </Paper>
