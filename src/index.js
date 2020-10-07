@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import CssBaseline from "@material-ui/core/CssBaseline"
+/* import { debugContextDevtool } from 'react-context-devtool'; */
 
+const root = document.getElementById('root')
 ReactDOM.render(
   <React.StrictMode>
     <React.Fragment>
@@ -11,7 +13,7 @@ ReactDOM.render(
       <App />
     </React.Fragment>
   </React.StrictMode>,
-  document.getElementById('root')
+  root
 );
-
+/* debugContextDevtool(root) */
 serviceWorker.unregister();

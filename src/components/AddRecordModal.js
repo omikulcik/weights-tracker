@@ -19,13 +19,25 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         padding: theme.spacing(2, 4, 3),
     },
+    muiInput: {
+        display: "block",
+        marginBottom: "1rem",
+        "& .MuiInputBase-root": {
+            width: "100%"
+        }
+    },
+    submitBtn: {
+        display: "block",
+        margin: "1rem auto"
+    }
+
 }));
 
 const AddRecordModal = (props) => {
 
     const classes = useStyles()
     const { recordsDispatch } = useContext(AppContext)
-    const { control, handleSubmit } = useForm()
+    const { control, handleSubmit, errors } = useForm()
     const [cookies] = useCookies()
     const { loading: isRecordAdding, run: requestRecordAddition } = useRequest(addRecord, {
         manual: true,
@@ -64,6 +76,13 @@ const AddRecordModal = (props) => {
                                     format="MM/dd/yyyy"
                                     margin="normal"
                                     defaultValue={new Date()}
+                                    className={classes.muiInput}
+                                    autoOk
+                                    rules={{
+                                        required: "Required field",
+                                    }}
+                                    error={errors}
+                                    helperText={errors.date?.message}
                                 />
                             </MuiPickersUtilsProvider>
                             <Controller
@@ -73,6 +92,16 @@ const AddRecordModal = (props) => {
                                 type="number"
                                 control={control}
                                 defaultValue={1}
+                                className={classes.muiInput}
+                                error={errors.weight}
+                                helperText={errors.weight?.message}
+                                rules={{
+                                    required: "Required field",
+                                    min: {
+                                        value: 0,
+                                        message: "Minimal value is 0"
+                                    }
+                                }}
                             />
                             <Controller
                                 as={<TextField />}
@@ -81,6 +110,16 @@ const AddRecordModal = (props) => {
                                 type="number"
                                 control={control}
                                 defaultValue={1}
+                                className={classes.muiInput}
+                                rules={{
+                                    required: "Required field",
+                                    min: {
+                                        value: 1,
+                                        message: "Minimal value is 1"
+                                    }
+                                }}
+                                error={errors}
+                                helperText={errors.reps?.message}
                             />
                             <Controller
                                 as={<TextField />}
@@ -89,10 +128,22 @@ const AddRecordModal = (props) => {
                                 type="number"
                                 control={control}
                                 defaultValue={1}
+                                className={classes.muiInput}
+                                rules={{
+                                    required: "Required field",
+                                    min: {
+                                        value: 1,
+                                        message: "Minimal value is 1"
+                                    }
+                                }}
+                                error={errors}
+                                helperText={errors.series?.message}
                             />
                             <Button
                                 variant="contained"
                                 type="submit"
+                                color="primary"
+                                className={classes.submitBtn}
                             >Save</Button>
                         </form>}
             </Paper>

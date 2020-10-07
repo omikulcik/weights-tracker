@@ -17,13 +17,15 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         padding: theme.spacing(2, 4, 3),
     },
+    submitBtn: {
+        display: "block",
+        margin: "1rem auto"
+    }
 }));
 const AddExerciseModal = (props) => {
-
-
     const { exercisesDispatch } = useContext(AppContext)
     const classes = useStyles()
-    const { handleSubmit, control } = useForm()
+    const { handleSubmit, control, errors } = useForm()
     const [hasError, setHasError] = useState(false)
     const [cookies] = useCookies()
     const { loading: isExerciseAdding, run: requestAddExercise } = useRequest(addExercise, {
@@ -58,7 +60,6 @@ const AddExerciseModal = (props) => {
                                 Něco se nepovedlo, zkuste to prosím znovu.
                             </Alert> :
                             <form onSubmit={handleSubmit(handleCreateNewExercise)}>
-
                                 <Controller
                                     as={<TextField />}
                                     name="exerciseName"
@@ -66,9 +67,17 @@ const AddExerciseModal = (props) => {
                                     defaultValue=""
                                     label="Exercise name"
                                     autoFocus
+                                    rules={{
+                                        required: "Required field"
+                                    }}
+                                    error={errors.exerciseName}
+                                    helperText={errors.exerciseName?.message}
                                 />
                                 <Button
                                     type="submit"
+                                    variant="contained"
+                                    className={classes.submitBtn}
+                                    color="primary"
                                 >
                                     Odeslat
                                 </Button>

@@ -1,10 +1,11 @@
 import useRequest from "@ahooksjs/use-request"
-import { Button, Container, Paper, TextField, makeStyles, Typography } from "@material-ui/core"
+import { Button, Container, Paper, TextField, makeStyles, Typography, CircularProgress } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import React, { useContext, useState } from "react"
 import { useCookies } from "react-cookie"
 import { Controller, useForm } from "react-hook-form"
 import { Redirect, useHistory } from "react-router"
+import { Link } from "react-router-dom"
 import { logIn } from "../actions/userActions"
 import AppContext from "../contexts/AppContext"
 
@@ -31,7 +32,10 @@ const Login = () => {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            padding: "2rem 0"
+            padding: "2rem 0",
+            "& button": {
+                fontWeight: "bold"
+            }
         },
         pageTitle: {
             width: "100%",
@@ -41,17 +45,25 @@ const Login = () => {
         },
         error: {
             marginTop: "1rem"
+        },
+        registrationTeaser: {
+            fontWeight: "bold",
+            paddingBottom: "1rem",
+            "& a": {
+                textDecoration: "none",
+                color: theme.palette.primary
+            }
         }
     }))
 
 
     const classes = useStyles()
-    const { control, handleSubmit, errors } = useForm()
+    const { control, handleSubmit, errors } = useForm({ nativeValidation: true })
     const { setUser, user } = useContext(AppContext)
     const [, setCookie] = useCookies()
     const history = useHistory()
     const [apiError, setApiError] = useState()
-    const { run: requestLogin } = useRequest(logIn, {
+    const { run: requestLogin, loading: isLoggingIn } = useRequest(logIn, {
         manual: true,
         onSuccess: (result) => {
             setUser({
@@ -69,7 +81,7 @@ const Login = () => {
     }
 
     return (
-        <div>{
+        <>{
             user ?
                 <Redirect to="/" />
                 :
@@ -95,6 +107,7 @@ const Login = () => {
                             control={control}
                             label="e-mail"
                             className={classes.soloLine}
+                            defaultValue=""
                             rules={{
                                 required: "Required field"
                             }}
@@ -108,6 +121,7 @@ const Login = () => {
                             control={control}
                             label="password"
                             className={classes.soloLine}
+                            defaultValue=""
                             rules={{
                                 required: "Required field"
                             }}
@@ -121,20 +135,31 @@ const Login = () => {
                                 {apiError.message}
                             </Alert>}
                         <div className={classes.btnHolder}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
+                            {isLoggingIn ?
+                                <CircularProgress />
+                                :
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
 
-                            >
-                                Log In
+                                >
+                                    Log In
                             </Button>
+                            }
                         </div>
+                        <Typography
+                            variant="body1"
+                            component="p"
+                            className={classes.registrationTeaser}
+                        >
+                            Do not have an account? <Link to="/register">Click here to register!</Link>
+                        </Typography>
                     </Container>
 
                 </form>
         }
-        </div>
+        </>
     )
 }
 

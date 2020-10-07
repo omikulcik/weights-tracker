@@ -15,6 +15,7 @@ import { authStatus } from './actions/userActions';
 import useRequest from '@ahooksjs/use-request';
 import PersonIcon from '@material-ui/icons/Person';
 import UserMenu from './components/UserMenu';
+import { CircularProgress } from '@material-ui/core';
 
 
 const App = () => {
@@ -52,6 +53,10 @@ const App = () => {
             flexGrow: 1,
             textAlign: "center",
             fontWeight: "bold",
+        },
+        spinner: {
+            marginTop: "10%",
+            marginLeft: "calc(50% - 40px)"
         }
     }));
 
@@ -59,7 +64,7 @@ const App = () => {
     const classes = useStyles()
     const [exercises, exercisesDispatch] = useReducer(exercisesReducer, [])
     const [records, recordsDispatch] = useReducer(recordsReducer, [])
-    const [user, setUser] = useState()
+    const [user, setUser] = useState(null)
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
     const [cookies, , removeCookie] = useCookies()
     const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null)
@@ -68,7 +73,7 @@ const App = () => {
         setUserMenuAnchorEl(null)
     }
 
-    useRequest(authStatus, {
+    const { loading: isGettingStatus } = useRequest(authStatus, {
         defaultParams: {
             token: cookies.token
         },
@@ -94,7 +99,7 @@ const App = () => {
                 }} >
                     <AppBar
                         position="absolute"
-                        className={clsx(classes.appBar, user && isDrawerOpen && classes.appBarShift)}
+                        className={clsx(classes.appBar, user && !isGettingStatus && isDrawerOpen && classes.appBarShift)}
                     >
                         <Toolbar className={classes.toolbar}>
                             <IconButton
@@ -134,11 +139,17 @@ const App = () => {
                             />
                         </Toolbar>
                     </AppBar>
-                    <AppRouter
-                        isDrawerOpen={isDrawerOpen}
-                        setIsDrawerOpen={setIsDrawerOpen}
-                        user={user}
-                    />
+                    {
+                        isGettingStatus ?
+                            <CircularProgress
+                                className={classes.spinner}
+                            />
+                            :
+                            <AppRouter
+                                isDrawerOpen={isDrawerOpen}
+                                setIsDrawerOpen={setIsDrawerOpen}
+                                user={user}
+                            />}
                 </AppContext.Provider >
             </CookiesProvider>
         </div>

@@ -3,7 +3,7 @@ import { List, ListItem, ListItemIcon, ListItemText, Drawer, Divider, IconButton
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from 'clsx';
 
@@ -53,6 +53,18 @@ const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
             padding: '0 8px',
             ...theme.mixins.toolbar,
         },
+        menuList: {
+            "& a": {
+                textDecoration: "none",
+                color: theme.palette.text.primary,
+                fontWeight: "bold"
+            },
+            "& a.active": {
+                "& .MuiSvgIcon-root": {
+                    fill: theme.palette.text.primary
+                }
+            }
+        }
     }));
 
     const classes = useStyles()
@@ -72,8 +84,13 @@ const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 </IconButton>
             </div>
             <Divider />
-            <List>
-                <Link to="/">
+            <List
+                className={classes.menuList}
+            >
+                <NavLink
+                    to="/"
+                    exact
+                >
                     <ListItem button>
                         <ListItemIcon>
                             <DashboardIcon />
@@ -82,8 +99,10 @@ const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
                             Dashboard
                 </ListItemText>
                     </ListItem>
-                </Link>
-                <Link to="/exercises">
+                </NavLink>
+                <NavLink
+                    to="/exercises"
+                >
                     <ListItem button>
                         <ListItemIcon>
                             <FitnessCenterIcon />
@@ -92,7 +111,7 @@ const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
                             Exercises
                 </ListItemText>
                     </ListItem>
-                </Link>
+                </NavLink>
             </List>
         </Drawer>
 

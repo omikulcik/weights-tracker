@@ -20,11 +20,11 @@ const ConfirmationDialog = (props) => {
                             Něco se nepovedlo, zkuste to prosím znovu.
                         </Alert> :
                         <DialogActions>
-                            <Button onClick={props.handleClose} color="primary" variant="contained">
-                                Ne
-                            </Button>
                             <Button onClick={props.handleConfirmation} color="primary" variant="contained" autoFocus>
                                 Ano
+                            </Button>
+                            <Button onClick={props.handleClose} color="secondary" variant="contained">
+                                Ne
                             </Button>
                         </DialogActions>
             }

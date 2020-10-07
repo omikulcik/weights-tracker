@@ -18,9 +18,9 @@ const Excercises = () => {
         exercisesHead: {
             display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
             "& button": {
                 height: "2.5rem",
-                marginLeft: "3rem",
                 fontWeight: "bold"
             }
         },
@@ -72,11 +72,15 @@ const Excercises = () => {
                         <Alert severity="error">
                             Něco se pokazilo, zkuste to prosím znovu.
                         </Alert> :
-                        exercises.map(exercise =>
-                            <ExerciseCard
-                                key={exercise.id}
-                                {...exercise}
-                            />)
+                        exercises.length === 0 ?
+                            <Alert severity="warning">
+                                Nemáte žádné cviky zatím, přidejte nějaké.
+                        </Alert> :
+                            exercises.map(exercise =>
+                                <ExerciseCard
+                                    key={exercise.id}
+                                    {...exercise}
+                                />)
             }
             <AddExerciseModal
                 isModalOpen={isModalOpen}
