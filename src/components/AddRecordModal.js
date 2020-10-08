@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import 'date-fns';
 import { makeStyles } from "@material-ui/core/styles"
 import { Modal, Paper, Button, CircularProgress, TextField } from "@material-ui/core"
@@ -9,6 +9,8 @@ import { addRecord, finishAddRecord } from "../actions/recordsActions";
 import useRequest from "@ahooksjs/use-request";
 import AppContext from "../contexts/AppContext";
 import { useCookies } from "react-cookie";
+import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -39,9 +41,18 @@ const AddRecordModal = (props) => {
     const { recordsDispatch } = useContext(AppContext)
     const { control, handleSubmit, errors } = useForm()
     const [cookies] = useCookies()
+    const [hasError, setHasError] = useState(false)
+    const checkAutoLogout = useAutomaticLogoutCheck()
     const { loading: isRecordAdding, run: requestRecordAddition } = useRequest(addRecord, {
         manual: true,
-        onSuccess: (result) => recordsDispatch(finishAddRecord(result.data))
+        onSuccess: (result) => {
+            recordsDispatch(finishAddRecord(result.data))
+            props.setIsOpen(false)
+        },
+        onError: (err) => {
+            checkAutoLogout(err)
+            setHasError(true)
+        }
     })
 
     const handleNewRecordSubmition = (data) => {
@@ -81,7 +92,7 @@ const AddRecordModal = (props) => {
                                     rules={{
                                         required: "Required field",
                                     }}
-                                    error={errors}
+                                    error={errors.date}
                                     helperText={errors.date?.message}
                                 />
                             </MuiPickersUtilsProvider>
@@ -118,7 +129,7 @@ const AddRecordModal = (props) => {
                                         message: "Minimal value is 1"
                                     }
                                 }}
-                                error={errors}
+                                error={errors.reps}
                                 helperText={errors.reps?.message}
                             />
                             <Controller
@@ -136,9 +147,16 @@ const AddRecordModal = (props) => {
                                         message: "Minimal value is 1"
                                     }
                                 }}
-                                error={errors}
+                                error={errors.series}
                                 helperText={errors.series?.message}
-                            />
+                            />{
+                                hasError &&
+                                <Alert
+                                    severity="error"
+                                >
+                                    Něco se nepovedlo, zkuste to prosím znovu
+                                </Alert>
+                            }
                             <Button
                                 variant="contained"
                                 type="submit"

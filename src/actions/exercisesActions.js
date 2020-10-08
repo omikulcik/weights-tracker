@@ -15,7 +15,6 @@ export const finishAddExercise = (data) => ({
 })
 
 export const getExercises = (data) => {
-    console.log(data)
     return axios.get("/getExercises", {
         headers: makeHeaders(data.token)
     })

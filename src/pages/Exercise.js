@@ -9,8 +9,9 @@ import useRequest from "@ahooksjs/use-request";
 import { finishGetRecords, getRecords } from "../actions/recordsActions";
 import Record from "../components/Record";
 import { useCookies } from "react-cookie";
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, CartesianGrid } from "recharts";
-import moment from "moment"
+import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
+import { Alert } from "@material-ui/lab";
+import Chart from "../components/Chart"
 
 
 const Excercise = () => {
@@ -32,17 +33,29 @@ const Excercise = () => {
                 height: "2.5rem",
                 fontWeight: "bold"
             }
+        },
+        loadingCont: {
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: "2rem",
+            paddingBottom: "2rem"
         }
     }))
     const classes = styles()
 
     const [isAddRecordModalOpen, setIsAddRecordModalOpen] = useState(false)
+    const [hasError, setHasError] = useState(false)
+    const checkAutoLogout = useAutomaticLogoutCheck()
     const { loading: isRecordsLoading } = useRequest(getRecords, {
         defaultParams: {
             exerciseId: parseInt(id),
             token: cookies.token
         },
-        onSuccess: (result) => recordsDispatch(finishGetRecords(result.data))
+        onSuccess: (result) => recordsDispatch(finishGetRecords(result.data)),
+        onError: (err) => {
+            setHasError(true)
+            checkAutoLogout(err)
+        }
     })
     useEffect(() => {
         if (records.length > 0) {
@@ -81,59 +94,62 @@ const Excercise = () => {
                             Add new Record
                         </Button>
                 </Grid>
-                <Grid item lg={12} >
-                    <Paper>
-                        <ResponsiveContainer width="100%" height={400} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                            <LineChart data={dataWithAvg}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <Line type="monotone" dataKey="avg" stroke="#000" />
-                                <Line type="monotone" dataKey="weight" stroke="#8884d8" />
-                                <Line type="monotone" dataKey="sum" stroke="#FF0000" />
-                                <Tooltip />
-                                <Legend />
-                                <XAxis dataKey="date" tickFormatter={(t) => moment(t).format("DD/MM/YY")} />
-                                <YAxis type="number" />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    </Paper>
-                </Grid>
-                <Grid item lg={12} spacing={3}>
-                    {
-                        isRecordsLoading ?
-                            <CircularProgress />
-                            :
-                            <Paper>
-                                <TableContainer >
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>
-                                                    Datum
+                {
+                    (isRecordsLoading || hasError || records.length === 0) ?
+                        <Grid item lg={12} component={Paper} className={classes.loadingCont}>
+                            {
+                                records.length === 0 ?
+                                    <Alert severity="warning">
+                                        Nemáte žádné záznamy, přidejte nějaké.
+                                </Alert> :
+                                    isRecordsLoading ?
+                                        <CircularProgress /> :
+                                        <Alert severity="error">
+                                            Něco se pokazilo
+                                </Alert>
+                            }
+                        </Grid>
+                        :
+                        <>
+                            <Grid item lg={12} >
+                                <Chart
+                                    data={dataWithAvg}
+                                />
+                            </Grid>
+                            <Grid item lg={12} spacing={3}>
+                                <Paper>
+                                    <TableContainer >
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>
+                                                        Datum
                                 </TableCell>
-                                                <TableCell>
-                                                    Váha
+                                                    <TableCell>
+                                                        Váha
                                 </TableCell>
-                                                <TableCell>
-                                                    Reps
+                                                    <TableCell>
+                                                        Reps
                                 </TableCell>
-                                                <TableCell>
-                                                    Series
+                                                    <TableCell>
+                                                        Series
                                 </TableCell>
-                                                <TableCell>
-                                                    Delete
+                                                    <TableCell>
+                                                        Delete
                                 </TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {
-                                                records.map((rec) => <Record key={rec.id} {...rec} />)
-                                            }
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </Paper>
-                    }
-                </Grid>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {
+                                                    records.map((rec) => <Record key={rec.id} {...rec} />)
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </Paper>
+                            </Grid>
+                        </>
+                }
             </Grid>
             <AddRecordModal
                 open={isAddRecordModalOpen}

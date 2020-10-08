@@ -9,6 +9,7 @@ import { deleteExercise, finishDeleteExercise } from "../actions/exercisesAction
 import AppContext from "../contexts/AppContext"
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useCookies } from "react-cookie";
+import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 
 const ExerciseCard = (props) => {
 
@@ -21,7 +22,8 @@ const ExerciseCard = (props) => {
         exerciseName: {
             display: "block",
             flexBasis: "100%",
-            padding: "2rem 0"
+            padding: "2rem 0",
+            fontWeight: "bold"
         },
         exerciseLink: {
             marginLeft: "auto"
@@ -36,6 +38,9 @@ const ExerciseCard = (props) => {
             top: "0.5rem",
             right: "0.6rem",
             cursor: "pointer"
+        },
+        exerciseSpec: {
+            flexBasis: "100%"
         }
     }))
 
@@ -45,11 +50,15 @@ const ExerciseCard = (props) => {
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
     const [hasDeletionError, setHasDeletionError] = useState(false)
     const [cookies] = useCookies()
+    const checkAutoLogout = useAutomaticLogoutCheck()
 
     const { loading: isExerciseDeleting, run: requestExerciseDeletion } = useRequest(deleteExercise, {
         manual: true,
         onSuccess: () => exercisesDispatch(finishDeleteExercise({ id: props.id })),
-        onError: () => setHasDeletionError(true)
+        onError: (err) => {
+            checkAutoLogout(err)
+            setHasDeletionError(true)
+        }
     })
 
     return (
@@ -59,8 +68,14 @@ const ExerciseCard = (props) => {
                     <IconButton className={classes.deleteIcon} onClick={() => setIsDeleteDialogOpen(true)} >
                         <DeleteIcon />
                     </IconButton>
-                    <Typography component="h3" variant="h6" className={classes.exerciseName}>
+                    <Typography component="h3" variant="h5" className={classes.exerciseName}>
                         {props.name}
+                    </Typography>
+                    <Typography component="h4" variant="h6" className={classes.exerciseSpec}>
+                        Rekord: {props.maxWeight ? props.maxWeight : 0}
+                    </Typography>
+                    <Typography component="h4" variant="h6" className={classes.exerciseSpec}>
+                        Počet záznamů: {props.recordsCount}
                     </Typography>
                     <Link to={`exercise/${props.id}`} className={classes.exerciseLink}>
                         <Button variant="contained" className={classes.roundButton} color="primary">

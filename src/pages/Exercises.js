@@ -9,6 +9,7 @@ import AppContext from "../contexts/AppContext";
 import useRequest from '@ahooksjs/use-request';
 import { Alert } from "@material-ui/lab";
 import { useCookies } from "react-cookie";
+import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 
 
 
@@ -37,10 +38,13 @@ const Excercises = () => {
     const [hasExercisesLoadingError, setHasExercisesLoadingError] = useState(false)
     const { exercises, exercisesDispatch } = useContext(AppContext)
     const [cookies] = useCookies()
-
+    const checkAutoLogout = useAutomaticLogoutCheck()
     const { loading: isExercisesLoading } = useRequest(getExercises, {
         onSuccess: (result) => exercisesDispatch(finishGetExercises(result.data)),
-        onError: () => setHasExercisesLoadingError(true),
+        onError: (err) => {
+            checkAutoLogout(err)
+            setHasExercisesLoadingError(true)
+        },
         defaultParams: {
             token: cookies.token
         }

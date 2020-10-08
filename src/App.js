@@ -68,6 +68,7 @@ const App = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
     const [cookies, , removeCookie] = useCookies()
     const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null)
+    const [hasBeenLoggedOut, setHasBeenLoggedOut] = useState(false)
 
     const handleCloseUserMenu = () => {
         setUserMenuAnchorEl(null)
@@ -95,7 +96,9 @@ const App = () => {
                     records,
                     recordsDispatch,
                     user,
-                    setUser
+                    setUser,
+                    hasBeenLoggedOut,
+                    setHasBeenLoggedOut
                 }} >
                     <AppBar
                         position="absolute"

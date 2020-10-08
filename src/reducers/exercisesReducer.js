@@ -4,7 +4,11 @@ const exercisesReducer = (state, action) => {
             return action.data
         case "ADD_EXERCISE":
             return [
-                action.data,
+                {
+                    ...action.data,
+                    maxWeight: 0,
+                    recordsCount: 0
+                },
                 ...state
             ]
         case "DELETE_EXERCISE":

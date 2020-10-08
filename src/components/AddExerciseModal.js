@@ -7,6 +7,7 @@ import useRequest from "@ahooksjs/use-request";
 import AppContext from "../contexts/AppContext";
 import { Alert } from "@material-ui/lab";
 import { useCookies } from "react-cookie";
+import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -28,13 +29,17 @@ const AddExerciseModal = (props) => {
     const { handleSubmit, control, errors } = useForm()
     const [hasError, setHasError] = useState(false)
     const [cookies] = useCookies()
+    const checkAutoLogout = useAutomaticLogoutCheck()
     const { loading: isExerciseAdding, run: requestAddExercise } = useRequest(addExercise, {
         manual: true,
         onSuccess: (res) => {
             exercisesDispatch(finishAddExercise(res.data))
             props.setIsModalOpen(false)
         },
-        onError: () => setHasError(true)
+        onError: (err) => {
+            checkAutoLogout(err)
+            setHasError(true)
+        }
     })
 
     const handleCreateNewExercise = (data) => {
@@ -53,35 +58,36 @@ const AddExerciseModal = (props) => {
         >
             <Paper className={classes.paper}>
                 {
-                    isExerciseAdding ?
-                        <CircularProgress /> :
-                        hasError ?
-                            <Alert severity="error">
-                                Něco se nepovedlo, zkuste to prosím znovu.
+                    hasError ?
+                        <Alert severity="error">
+                            Něco se nepovedlo, zkuste to prosím znovu.
                             </Alert> :
-                            <form onSubmit={handleSubmit(handleCreateNewExercise)}>
-                                <Controller
-                                    as={<TextField />}
-                                    name="exerciseName"
-                                    control={control}
-                                    defaultValue=""
-                                    label="Exercise name"
-                                    autoFocus
-                                    rules={{
-                                        required: "Required field"
-                                    }}
-                                    error={errors.exerciseName}
-                                    helperText={errors.exerciseName?.message}
-                                />
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    className={classes.submitBtn}
-                                    color="primary"
-                                >
-                                    Odeslat
-                                </Button>
-                            </form>
+                        <form onSubmit={handleSubmit(handleCreateNewExercise)}>
+                            <Controller
+                                as={<TextField />}
+                                name="exerciseName"
+                                control={control}
+                                defaultValue=""
+                                label="Exercise name"
+                                autoFocus
+                                rules={{
+                                    required: "Required field"
+                                }}
+                                error={errors.exerciseName}
+                                helperText={errors.exerciseName?.message}
+                            />
+                            {
+                                isExerciseAdding ?
+                                    <CircularProgress /> :
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        className={classes.submitBtn}
+                                        color="primary"
+                                    >
+                                        Odeslat
+                                </Button>}
+                        </form>
                 }
             </Paper>
         </Modal>

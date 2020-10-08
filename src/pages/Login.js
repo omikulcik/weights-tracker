@@ -4,7 +4,7 @@ import { Alert } from "@material-ui/lab"
 import React, { useContext, useState } from "react"
 import { useCookies } from "react-cookie"
 import { Controller, useForm } from "react-hook-form"
-import { Redirect, useHistory } from "react-router"
+import { Redirect } from "react-router"
 import { Link } from "react-router-dom"
 import { logIn } from "../actions/userActions"
 import AppContext from "../contexts/AppContext"
@@ -53,25 +53,26 @@ const Login = () => {
                 textDecoration: "none",
                 color: theme.palette.primary
             }
+        },
+        autoLogoutMesssage: {
+            marginTop: "1rem"
         }
     }))
 
 
     const classes = useStyles()
     const { control, handleSubmit, errors } = useForm({ nativeValidation: true })
-    const { setUser, user } = useContext(AppContext)
+    const { setUser, user, hasBeenLoggedOut } = useContext(AppContext)
     const [, setCookie] = useCookies()
-    const history = useHistory()
     const [apiError, setApiError] = useState()
     const { run: requestLogin, loading: isLoggingIn } = useRequest(logIn, {
         manual: true,
         onSuccess: (result) => {
+            setCookie("token", result.data.token)
             setUser({
                 uuid: result.uuid,
                 email: result.email,
             })
-            setCookie("token", result.data.token)
-            history.push("/")
         },
         onError: (err) => setApiError(err.response.data),
     })
@@ -100,6 +101,13 @@ const Login = () => {
                         >
                             Hello! Sign into your account please.
                         </Typography>
+                        {hasBeenLoggedOut &&
+                            <Alert
+                                severity="warning"
+                                className={classes.autoLogoutMesssage}
+                            >
+                                Vaše přihlášení vypršelo, byl jste automaticky odhlášen.
+                        </Alert>}
                         <Controller
                             as={<TextField />}
                             type="email"

@@ -7,37 +7,53 @@ import { deleteRecord, finishDeleteRecord } from "../actions/recordsActions";
 import { useCookies } from "react-cookie";
 import AppContext from "../contexts/AppContext";
 import ConfirmationDialog from "./ConfirmationDialog";
+import { Alert } from "@material-ui/lab";
+import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 
 const Record = (props) => {
     const { recordsDispatch } = useContext(AppContext)
     const [isRecordDeletionRequested, setIsRecordDeletionRequested] = useState(false)
     const [cookies] = useCookies()
+    const [hasError, setHasError] = useState(false)
+    const checkAutoLogout = useAutomaticLogoutCheck()
     const { run: requestRecordDeletion, loading: isRecordDeleting } = useRequest(deleteRecord, {
         manual: true,
-        onSuccess: (res, params) => recordsDispatch(finishDeleteRecord({ recordId: params[0].recordId }))
+        onSuccess: (res, params) => recordsDispatch(finishDeleteRecord({ recordId: params[0].recordId })),
+        onError: (err) => {
+            setHasError(true)
+            checkAutoLogout(err)
+        }
     })
 
     return (
         <>
-            <TableRow>
-                <TableCell>
-                    {moment(props.date).format("DD. MM. YYYY")}
-                </TableCell>
-                <TableCell>
-                    {props.weight}
-                </TableCell>
-                <TableCell>
-                    {props.reps}
-                </TableCell>
-                <TableCell>
-                    {props.series}
-                </TableCell>
-                <TableCell>
-                    <IconButton onClick={() => setIsRecordDeletionRequested(true)} >
-                        <DeleteIcon />
-                    </IconButton>
-                </TableCell>
-            </TableRow>
+            {
+                hasError ?
+                    <Alert
+                        severity="error">
+                        Něco se pokazilo
+                    </Alert>
+                    :
+                    <TableRow>
+                        <TableCell>
+                            {moment(props.date).format("DD. MM. YYYY")}
+                        </TableCell>
+                        <TableCell>
+                            {props.weight}
+                        </TableCell>
+                        <TableCell>
+                            {props.reps}
+                        </TableCell>
+                        <TableCell>
+                            {props.series}
+                        </TableCell>
+                        <TableCell>
+                            <IconButton onClick={() => setIsRecordDeletionRequested(true)} >
+                                <DeleteIcon />
+                            </IconButton>
+                        </TableCell>
+                    </TableRow>
+            }
             <ConfirmationDialog
                 open={isRecordDeletionRequested}
                 handleClose={() => setIsRecordDeletionRequested(false)}
