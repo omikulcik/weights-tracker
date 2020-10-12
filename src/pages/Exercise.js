@@ -31,6 +31,7 @@ const Excercise = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            flexWrap: "wrap",
             "& button": {
                 height: "2.5rem",
                 fontWeight: "bold"
@@ -79,7 +80,7 @@ const Excercise = () => {
         <>
             <Grid container spacing={3}>{
             }
-                <Grid item lg={12} className={classes.exerciseTop}>
+                <Grid item xs={12} className={classes.exerciseTop}>
                     <Typography
                         variant="h3"
                         component="h3"
@@ -97,7 +98,7 @@ const Excercise = () => {
                 </Grid>
                 {
                     (isRecordsLoading || hasError || records.length === 0) ?
-                        <Grid item lg={12} component={Paper} className={classes.loadingCont}>
+                        <Grid item xs={12} component={Paper} className={classes.loadingCont}>
                             {
                                 isRecordsLoading ?
                                     <CircularProgress />
@@ -114,12 +115,12 @@ const Excercise = () => {
                         </Grid>
                         :
                         <>
-                            <Grid item lg={12} >
+                            <Grid item xs={12} >
                                 <Chart
                                     data={dataWithAvg}
                                 />
                             </Grid>
-                            <Grid item lg={12} spacing={3}>
+                            <Grid item xs={12} >
                                 <Paper>
                                     <TableContainer >
                                         <Table>

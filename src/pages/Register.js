@@ -17,7 +17,8 @@ const Register = () => {
             },
             display: "block",
             marginTop: "1rem",
-            width: "80%"
+            width: "80%",
+            maxWidth: "21rem"
         },
         container: {
             display: "flex",

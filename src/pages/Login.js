@@ -19,7 +19,8 @@ const Login = () => {
             },
             display: "block",
             marginTop: "1rem",
-            width: "80%"
+            width: "80%",
+            maxWidth: "21rem"
         },
         container: {
             display: "flex",
@@ -52,10 +53,14 @@ const Login = () => {
             paddingBottom: "1rem",
             "& a": {
                 textDecoration: "none",
-                color: theme.palette.primary
+                color: theme.palette.primary.main
             }
         },
         autoLogoutMesssage: {
+            marginTop: "1rem"
+        },
+        regBtn:{
+            display: "block",
             marginTop: "1rem"
         }
     }))
@@ -162,7 +167,14 @@ const Login = () => {
                             component="p"
                             className={classes.registrationTeaser}
                         >
-                            {t("nemate jeste ucet")} <Link to="/register">{t("registrujte se zde")}</Link>
+                            {t("nemate jeste ucet")}
+                                <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    className={classes.regBtn}
+                                >
+                             <Link to="/register">{t("registrujte se zde")}</Link>
+                             </Button>
                         </Typography>
                     </Container>
                 </form>

@@ -1,4 +1,4 @@
-import React, { useState, useReducer} from 'react';
+import React, { useState, useReducer, useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -18,9 +18,11 @@ import UserMenu from './components/UserMenu';
 import { Button, CircularProgress } from '@material-ui/core';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
+import moment from "moment"
 import czflag from "./img/cz-flag.png"
 import ukflag from "./img/uk-flag.png"
-
+import "moment/locale/cs"
+import "moment/locale/en-gb"
 
 const App = () => {
     const drawerWidth = 240;
@@ -88,6 +90,13 @@ const App = () => {
             setUser(null)
         }
     })
+
+    useEffect(() =>{
+        i18n.languages[0] === "cs"?
+        moment.locale("cs") :
+        moment.locale("en-gb")
+    }, [i18n.languages])
+
 
     return (
         <div className={classes.root}>

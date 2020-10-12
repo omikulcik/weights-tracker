@@ -63,7 +63,13 @@ const ExerciseCard = (props) => {
     })
 
     return (
-        <Grid item lg={3}>
+        <Grid 
+            item
+            lg={3}
+            md={4}
+            sm={6}
+            xs={12}
+            >
             <Card>
                 <CardContent className={classes.cardContent}>
                     <IconButton className={classes.deleteIcon} onClick={() => setIsDeleteDialogOpen(true)} >

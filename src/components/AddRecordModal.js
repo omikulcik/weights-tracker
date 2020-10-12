@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddRecordModal = (props) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const classes = useStyles()
     const { recordsDispatch } = useContext(AppContext)
     const { control, handleSubmit, errors } = useForm()
@@ -77,7 +77,10 @@ const AddRecordModal = (props) => {
                         <CircularProgress />
                         :
                         <form onSubmit={handleSubmit(handleNewRecordSubmition)}>
-                            <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <MuiPickersUtilsProvider 
+                                utils={MomentUtils}
+                                locale={i18n.languages[0]}
+                                >
                                 <Controller
                                     as={<KeyboardDatePicker />}
                                     name="date"

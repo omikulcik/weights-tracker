@@ -69,7 +69,12 @@ const Dashboard = () => {
                         </Alert>
                         :
                         <Grid container >
-                            <Grid item lg={4} className={classes.dashDataCol}>
+                            <Grid 
+                                item
+                                md={4}
+                                xs={12}
+                                className={classes.dashDataCol}
+                            >
                                 <Typography
                                     variant="h2"
                                     component="div"
@@ -85,7 +90,10 @@ const Dashboard = () => {
                                     {t("maximalni vaha")}
                                 </Typography>
                             </Grid>
-                            <Grid item lg={4} className={classes.dashDataCol}>
+                            <Grid item 
+                            md={4}
+                            xs={12}
+                            className={classes.dashDataCol}>
                                 <Typography
                                     variant="h2"
                                     component="div"
@@ -101,7 +109,10 @@ const Dashboard = () => {
                                     {t("celkem zdvizeno")}
                                 </Typography>
                             </Grid>
-                            <Grid item lg={4} className={classes.dashDataCol}>
+                            <Grid item 
+                            md={4}
+                            xs={12}
+                            className={classes.dashDataCol}>
                                 <Typography
                                     variant="h2"
                                     component="div"

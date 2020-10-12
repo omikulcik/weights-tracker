@@ -19,6 +19,7 @@ const Excercises = () => {
     const styles = makeStyles(theme => ({
         exercisesHead: {
             display: "flex",
+            flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "space-between",
             "& button": {
