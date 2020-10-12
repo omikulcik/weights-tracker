@@ -39,5 +39,9 @@
         "User with this email already exists": "User with this e-mail already exists",
         "Not existing user": "User with the submited parameters does not exist.",
         "Wrong password": "You have submited a wrong password."
+    },
+    "legend": {
+        "weight": "Records weight",
+        "avg": "Avarage weight"
     }
 }

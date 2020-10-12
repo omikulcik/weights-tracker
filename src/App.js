@@ -71,7 +71,7 @@ const App = () => {
     const [exercises, exercisesDispatch] = useReducer(exercisesReducer, [])
     const [records, recordsDispatch] = useReducer(recordsReducer, [])
     const [user, setUser] = useState(null)
-    const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [cookies, , removeCookie] = useCookies()
     const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null)
     const [langMenuAnchorEl, setLangmenuAnchorEl] = useState(null)

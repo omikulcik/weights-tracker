@@ -13,7 +13,7 @@ import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 import { Alert } from "@material-ui/lab";
 import Chart from "../components/Chart"
 import { useTranslation } from "react-i18next";
-
+import moment from "moment"
 
 const Excercise = () => {
 
@@ -63,14 +63,13 @@ const Excercise = () => {
     useEffect(() => {
         if (records.length > 0) {
             setDataWithAvg(
-                records.map((rec, i) => {
+                records.sort((a,b) => moment(a.date) - moment(b.date)).map((rec, i) => {
                     const pastData = records.slice(0, i + 1).map(r => r.weight)
                     const pastSum = pastData.length > 0 ? pastData.reduce((a, b) => a + b, 0) : 0
                     const avg = pastData.length > 0 ? pastSum / pastData.length : 0
                     return {
                         ...rec,
-                        avg,
-                        sum: pastSum
+                        avg: avg.toFixed(2),
                     }
                 }))
         }
@@ -145,7 +144,9 @@ const Excercise = () => {
                                             </TableHead>
                                             <TableBody>
                                                 {
-                                                    records.map((rec) => <Record key={rec.id} {...rec} />)
+                                                    records
+                                                    .sort((a,b) => moment(b.date) - moment(a.date))
+                                                    .map((rec) => <Record key={rec.id} {...rec} />)
                                                 }
                                             </TableBody>
                                         </Table>

@@ -88,7 +88,7 @@ const AddRecordModal = (props) => {
                                     control={control}
                                     disableToolbar
                                     variant="inline"
-                                    format="MM/dd/yyyy"
+                                    format="DD.MM.YYYY"
                                     margin="normal"
                                     defaultValue={new Date()}
                                     className={classes.muiInput}

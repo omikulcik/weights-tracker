@@ -39,5 +39,9 @@
         "User with this email already exists": "Uživatel s tímto e-mailem již existuje",
         "Not existing user": "Uživatel s těmito údaji neexistuje",
         "Wrong password": "Zadali jste nesprávné heslo"
+    },
+    "legend": {
+        "weight": "Váha záznamu",
+        "avg": "Průměrná váha"
     }
 }
