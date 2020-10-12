@@ -34,4 +34,4 @@ export const deleteExercise = (data, token) => {
 export const finishDeleteExercise = (data) => ({
     type: "DELETE_EXERCISE",
     data
-})
+}) 
