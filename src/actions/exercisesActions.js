@@ -1,6 +1,6 @@
 import axios from "axios"
 import makeHeaders from "../utils/makeHeaders"
-axios.defaults.baseURL = "http://127.0.0.1:3000"
+axios.defaults.baseURL = "https://weightstracker-backend.herokuapp.com:443"
 
 
 export const addExercise = (data, token) => {
