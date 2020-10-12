@@ -10,6 +10,7 @@ import useRequest from '@ahooksjs/use-request';
 import { Alert } from "@material-ui/lab";
 import { useCookies } from "react-cookie";
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -33,7 +34,7 @@ const Excercises = () => {
         }
     }))
     const classes = styles()
-
+    const { t } = useTranslation()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [hasExercisesLoadingError, setHasExercisesLoadingError] = useState(false)
     const { exercises, exercisesDispatch } = useContext(AppContext)
@@ -58,7 +59,7 @@ const Excercises = () => {
                     component="h2"
                     variant="h3"
                 >
-                    Exercises
+                    {t("cviky")}
                 </Typography>
                 <Button
                     variant="contained"
@@ -66,7 +67,7 @@ const Excercises = () => {
                     onClick={() => setIsModalOpen(true)}
                 >
                     <AddCircleIcon className={classes.addBtn} />
-                    Add new exercise
+                    {t("pridat novy cvik")}
                 </Button>
             </Grid>
             {
@@ -74,12 +75,12 @@ const Excercises = () => {
                     <CircularProgress className={classes.spinner} /> :
                     hasExercisesLoadingError ?
                         <Alert severity="error">
-                            Něco se pokazilo, zkuste to prosím znovu.
+                            {t("errors.neco se nepovedlo")}
                         </Alert> :
                         exercises.length === 0 ?
                             <Alert severity="warning">
-                                Nemáte žádné cviky zatím, přidejte nějaké.
-                        </Alert> :
+                                {t("nemate zadne cviky")}
+                            </Alert> :
                             exercises.map(exercise =>
                                 <ExerciseCard
                                     key={exercise.id}

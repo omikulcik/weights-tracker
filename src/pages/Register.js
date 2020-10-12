@@ -4,6 +4,7 @@ import { Alert } from "@material-ui/lab"
 import React, { useContext, useState } from "react"
 import { useCookies } from "react-cookie"
 import { Controller, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { Redirect, useHistory } from "react-router"
 import { register } from "../actions/userActions"
 import AppContext from "../contexts/AppContext"
@@ -54,6 +55,7 @@ const Register = () => {
         }
     }))
 
+    const { t } = useTranslation()
     const classes = useStyles()
     const [, setCookie] = useCookies()
     const { control, handleSubmit, errors, getValues } = useForm({ nativeValidation: true })
@@ -97,7 +99,7 @@ const Register = () => {
                                 name="email"
                                 label="E-mail"
                                 className={classes.soloLine}
-                                rules={{ required: "Required field" }}
+                                rules={{ required: t("povinne pole") }}
                                 error={errors.email}
                                 helperText={errors.email?.message}
                             />
@@ -107,13 +109,13 @@ const Register = () => {
                                 control={control}
                                 defaultValue=""
                                 name="password"
-                                label="Password"
+                                label={t("heslo")}
                                 className={classes.soloLine}
                                 rules={{
-                                    required: "Required field",
+                                    required: t("povinne pole"),
                                     pattern: {
                                         value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-                                        message: "Must be longer",
+                                        message: t("musi mit pozadavky hesla"),
                                     }
                                 }}
                                 error={errors.password}
@@ -125,13 +127,13 @@ const Register = () => {
                                 control={control}
                                 defaultValue=""
                                 name="repeatPassword"
-                                label="Password again"
+                                label={t("heslo znovu")}
                                 className={classes.soloLine}
                                 rules={{
-                                    required: "Required field",
+                                    required: t("povinne pole"),
                                     pattern: {
                                         value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-                                        message: "Must be longer",
+                                        message: t("musi mit pozadavky hesla"),
                                     },
                                     validate: {
                                         notSame: (val) => {
@@ -141,13 +143,13 @@ const Register = () => {
                                     }
                                 }}
                                 error={errors.repeatPassword}
-                                helperText={errors.repeatPassword?.type === "notSame" ? "Passwords not matching" : errors.repeatPassword?.message}
+                                helperText={errors.repeatPassword?.type === "notSame" ? t("hesla se neshoduji") : errors.repeatPassword?.message}
                             />
                             {apiError &&
                                 <Alert
                                     className={classes.error}
                                     severity="error">
-                                    {apiError.message}
+                                    {t(`errors.${apiError.message}`)}
                                 </Alert>}
                             <div className={classes.btnHolder}>
                                 {
@@ -159,8 +161,8 @@ const Register = () => {
                                             variant="contained"
                                             color="primary"
                                         >
-                                            Registrovat
-                                </Button>}
+                                            {t("registrovat")}
+                                        </Button>}
                             </div>
                         </Container>
                     </form>

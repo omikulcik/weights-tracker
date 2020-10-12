@@ -1,9 +1,11 @@
 import { Button, CircularProgress, Dialog, DialogActions, DialogTitle } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 
 const ConfirmationDialog = (props) => {
+    const { t } = useTranslation()
     return (
         <Dialog
             open={props.open}
@@ -17,14 +19,14 @@ const ConfirmationDialog = (props) => {
                     <CircularProgress /> :
                     props.confirmationError ?
                         <Alert severity="error">
-                            Něco se nepovedlo, zkuste to prosím znovu.
+                            {t("errors.neco se nepovedlo")}
                         </Alert> :
                         <DialogActions>
                             <Button onClick={props.handleConfirmation} color="primary" variant="contained" autoFocus>
-                                Ano
+                                {t("ano")}
                             </Button>
                             <Button onClick={props.handleClose} color="secondary" variant="contained">
-                                Ne
+                                {t("ne")}
                             </Button>
                         </DialogActions>
             }

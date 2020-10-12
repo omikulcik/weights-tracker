@@ -10,6 +10,7 @@ import AppContext from "../contexts/AppContext"
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useCookies } from "react-cookie";
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
+import { useTranslation } from "react-i18next";
 
 const ExerciseCard = (props) => {
 
@@ -45,7 +46,7 @@ const ExerciseCard = (props) => {
     }))
 
     const classes = styles()
-
+    const { t } = useTranslation()
     const { exercisesDispatch } = useContext(AppContext)
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
     const [hasDeletionError, setHasDeletionError] = useState(false)
@@ -72,10 +73,10 @@ const ExerciseCard = (props) => {
                         {props.name}
                     </Typography>
                     <Typography component="h4" variant="h6" className={classes.exerciseSpec}>
-                        Rekord: {props.maxWeight ? props.maxWeight : 0}
+                        {t("rekord")}: {props.maxWeight ? props.maxWeight : 0}
                     </Typography>
                     <Typography component="h4" variant="h6" className={classes.exerciseSpec}>
-                        Počet záznamů: {props.recordsCount}
+                        {t("pocet zaznamu")}: {props.recordsCount}
                     </Typography>
                     <Link to={`exercise/${props.id}`} className={classes.exerciseLink}>
                         <Button variant="contained" className={classes.roundButton} color="primary">
@@ -87,7 +88,7 @@ const ExerciseCard = (props) => {
                     handleConfirmation={() => requestExerciseDeletion({ id: props.id }, cookies.token)}
                     open={isDeleteDialogOpen}
                     handleClose={() => setIsDeleteDialogOpen(false)}
-                    dialogText={`Opravdu si přejete smazat cvik s názvem ${props.name}`}
+                    dialogText={`${t("opravdu si prejete smazat cvik s nazvem")} ${props.name}`}
                     isConfirmationInProgress={isExerciseDeleting}
                     confirmationError={hasDeletionError}
                 />

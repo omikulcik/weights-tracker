@@ -8,6 +8,7 @@ import AppContext from "../contexts/AppContext";
 import { Alert } from "@material-ui/lab";
 import { useCookies } from "react-cookie";
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 const AddExerciseModal = (props) => {
+    const { t } = useTranslation()
     const { exercisesDispatch } = useContext(AppContext)
     const classes = useStyles()
     const { handleSubmit, control, errors } = useForm()
@@ -60,18 +62,18 @@ const AddExerciseModal = (props) => {
                 {
                     hasError ?
                         <Alert severity="error">
-                            Něco se nepovedlo, zkuste to prosím znovu.
-                            </Alert> :
+                            {t("errors.neco se nepovedlo")}
+                        </Alert> :
                         <form onSubmit={handleSubmit(handleCreateNewExercise)}>
                             <Controller
                                 as={<TextField />}
                                 name="exerciseName"
                                 control={control}
                                 defaultValue=""
-                                label="Exercise name"
+                                label={t("nazev cviku")}
                                 autoFocus
                                 rules={{
-                                    required: "Required field"
+                                    required: t("povinne pole")
                                 }}
                                 error={errors.exerciseName}
                                 helperText={errors.exerciseName?.message}
@@ -85,8 +87,8 @@ const AddExerciseModal = (props) => {
                                         className={classes.submitBtn}
                                         color="primary"
                                     >
-                                        Odeslat
-                                </Button>}
+                                        {t("pridat")}
+                                    </Button>}
                         </form>
                 }
             </Paper>

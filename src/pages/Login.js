@@ -4,13 +4,14 @@ import { Alert } from "@material-ui/lab"
 import React, { useContext, useState } from "react"
 import { useCookies } from "react-cookie"
 import { Controller, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { Redirect } from "react-router"
 import { Link } from "react-router-dom"
 import { logIn } from "../actions/userActions"
 import AppContext from "../contexts/AppContext"
 
 const Login = () => {
-
+    const { t } = useTranslation()
     const useStyles = makeStyles(theme => ({
         soloLine: {
             "& .MuiInputBase-root": {
@@ -99,25 +100,25 @@ const Login = () => {
                             variant="h6"
                             className={classes.pageTitle}
                         >
-                            Hello! Sign into your account please.
+                            {t("vitejte prihlaste se")}
                         </Typography>
                         {hasBeenLoggedOut &&
                             <Alert
                                 severity="warning"
                                 className={classes.autoLogoutMesssage}
                             >
-                                Vaše přihlášení vypršelo, byl jste automaticky odhlášen.
-                        </Alert>}
+                                {t("byl jste automaticky odhlasen")}
+                            </Alert>}
                         <Controller
                             as={<TextField />}
                             type="email"
                             name="email"
                             control={control}
-                            label="e-mail"
+                            label="E-mail"
                             className={classes.soloLine}
                             defaultValue=""
                             rules={{
-                                required: "Required field"
+                                required: t("povinne pole")
                             }}
                             error={errors.email}
                             helperText={errors.email?.message}
@@ -127,11 +128,11 @@ const Login = () => {
                             type="password"
                             name="password"
                             control={control}
-                            label="password"
+                            label={t("heslo")}
                             className={classes.soloLine}
                             defaultValue=""
                             rules={{
-                                required: "Required field"
+                                required: t("povinne pole")
                             }}
                             error={errors.password}
                             helperText={errors.password?.message}
@@ -140,7 +141,7 @@ const Login = () => {
                             <Alert
                                 className={classes.error}
                                 severity="error">
-                                {apiError.message}
+                                {t(`errors.${apiError.message}`)}
                             </Alert>}
                         <div className={classes.btnHolder}>
                             {isLoggingIn ?
@@ -152,8 +153,8 @@ const Login = () => {
                                     color="primary"
 
                                 >
-                                    Log In
-                            </Button>
+                                    {t("prihlasit se")}
+                                </Button>
                             }
                         </div>
                         <Typography
@@ -161,10 +162,9 @@ const Login = () => {
                             component="p"
                             className={classes.registrationTeaser}
                         >
-                            Do not have an account? <Link to="/register">Click here to register!</Link>
+                            {t("nemate jeste ucet")} <Link to="/register">{t("registrujte se zde")}</Link>
                         </Typography>
                     </Container>
-
                 </form>
         }
         </>

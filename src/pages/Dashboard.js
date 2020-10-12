@@ -4,6 +4,7 @@ import { Alert } from "@material-ui/lab"
 import React, { useContext, useEffect, useState } from "react"
 import { useCookies } from "react-cookie"
 import CountUp from "react-countup"
+import { useTranslation } from "react-i18next"
 import { getDashboardData } from "../actions/dashBoardActions"
 import AppContext from "../contexts/AppContext"
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck"
@@ -27,6 +28,8 @@ const Dashboard = () => {
             marginBottom: "2rem"
         }
     }))
+
+    const { t } = useTranslation()
     const classes = useStyles()
     const { setHasBeenLoggedOut } = useContext(AppContext)
     const [cookies] = useCookies()
@@ -49,8 +52,8 @@ const Dashboard = () => {
                 variant="h3"
                 className={classes.heading}
             >
-                Dashboard
-        </Typography>
+                {t("dashboard")}
+            </Typography>
             <Paper
                 className={classes.paper}
             >
@@ -62,7 +65,7 @@ const Dashboard = () => {
                     hasApiError ?
                         <Alert
                             severity="error">
-                            Něco se nepovedlo, zkuste to prosím později
+                            {t("errors.neco se nepovedlo")}
                         </Alert>
                         :
                         <Grid container >
@@ -79,8 +82,8 @@ const Dashboard = () => {
                                     variant="h6"
                                     component="div"
                                 >
-                                    Maximální váha
-                    </Typography>
+                                    {t("maximalni vaha")}
+                                </Typography>
                             </Grid>
                             <Grid item lg={4} className={classes.dashDataCol}>
                                 <Typography
@@ -95,8 +98,8 @@ const Dashboard = () => {
                                     variant="h6"
                                     component="div"
                                 >
-                                    Celkem zdviženo
-                    </Typography>
+                                    {t("celkem zdvizeno")}
+                                </Typography>
                             </Grid>
                             <Grid item lg={4} className={classes.dashDataCol}>
                                 <Typography
@@ -111,8 +114,8 @@ const Dashboard = () => {
                                     variant="h6"
                                     component="div"
                                 >
-                                    Celkem záznamů
-                    </Typography>
+                                    {t("celkem zaznamu")}
+                                </Typography>
                             </Grid>
                         </Grid>
                 }

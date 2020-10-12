@@ -1,6 +1,7 @@
 import React from "react"
 import { Menu, MenuItem } from "@material-ui/core"
 import { useCookies } from "react-cookie"
+import { useTranslation } from "react-i18next"
 
 
 const UserMenu = (props) => {
@@ -11,6 +12,7 @@ const UserMenu = (props) => {
         props.setUser(null)
         props.handleClose()
     }
+    const { t } = useTranslation()
 
     return (
         <Menu
@@ -27,7 +29,7 @@ const UserMenu = (props) => {
             <MenuItem
                 onClick={handleLogout}
             >
-                Log Out
+                {t("odhlasit")}
             </MenuItem>
         </Menu>
     )

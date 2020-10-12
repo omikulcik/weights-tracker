@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -15,7 +15,11 @@ import { authStatus } from './actions/userActions';
 import useRequest from '@ahooksjs/use-request';
 import PersonIcon from '@material-ui/icons/Person';
 import UserMenu from './components/UserMenu';
-import { CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
+import czflag from "./img/cz-flag.png"
+import ukflag from "./img/uk-flag.png"
 
 
 const App = () => {
@@ -68,11 +72,9 @@ const App = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
     const [cookies, , removeCookie] = useCookies()
     const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null)
+    const [langMenuAnchorEl, setLangmenuAnchorEl] = useState(null)
     const [hasBeenLoggedOut, setHasBeenLoggedOut] = useState(false)
-
-    const handleCloseUserMenu = () => {
-        setUserMenuAnchorEl(null)
-    }
+    const {i18n} = useTranslation()
 
     const { loading: isGettingStatus } = useRequest(authStatus, {
         defaultParams: {
@@ -89,74 +91,94 @@ const App = () => {
 
     return (
         <div className={classes.root}>
-            <CookiesProvider>
-                <AppContext.Provider value={{
-                    exercises,
-                    exercisesDispatch,
-                    records,
-                    recordsDispatch,
-                    user,
-                    setUser,
-                    hasBeenLoggedOut,
-                    setHasBeenLoggedOut
-                }} >
-                    <AppBar
-                        position="absolute"
-                        className={clsx(classes.appBar, user && !isGettingStatus && isDrawerOpen && classes.appBarShift)}
-                    >
-                        <Toolbar className={classes.toolbar}>
-                            <IconButton
-                                edge="start"
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={() => setIsDrawerOpen(true)}
-                                className={clsx(
-                                    classes.menuButton,
-                                    isDrawerOpen && classes.menuButtonHidden,
-                                )}
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Typography
-                                component="h1"
-                                variant="h5"
-                                color="inherit"
-                                noWrap
-                                className={classes.title}
-                            >
-                                Weights Tracker
-                            </Typography>
-                            {
-                                user &&
+                <CookiesProvider>
+                    <AppContext.Provider value={{
+                        exercises,
+                        exercisesDispatch,
+                        records,
+                        recordsDispatch,
+                        user,
+                        setUser,
+                        hasBeenLoggedOut,
+                        setHasBeenLoggedOut
+                    }} >
+                        <AppBar
+                            position="absolute"
+                            className={clsx(classes.appBar, user && !isGettingStatus && isDrawerOpen && classes.appBarShift)}
+                        >
+                            <Toolbar className={classes.toolbar}>
                                 <IconButton
-                                    edge="end"
+                                    edge="start"
                                     color="inherit"
-                                    onClick={(e) => setUserMenuAnchorEl(e.currentTarget)}
+                                    aria-label="open drawer"
+                                    onClick={() => setIsDrawerOpen(true)}
+                                    className={clsx(
+                                        classes.menuButton,
+                                        isDrawerOpen && classes.menuButtonHidden,
+                                    )}
                                 >
-                                    <PersonIcon />
-                                </IconButton>}
-                            <UserMenu
-                                anchorEl={userMenuAnchorEl}
-                                handleClose={handleCloseUserMenu}
-                                setUser={setUser}
-                            />
-                        </Toolbar>
-                    </AppBar>
-                    {
-                        isGettingStatus ?
-                            <CircularProgress
-                                className={classes.spinner}
-                            />
-                            :
-                            <AppRouter
-                                isDrawerOpen={isDrawerOpen}
-                                setIsDrawerOpen={setIsDrawerOpen}
-                                user={user}
-                            />}
-                </AppContext.Provider >
-            </CookiesProvider>
+                                    <MenuIcon />
+                                </IconButton>
+                                <Typography
+                                    component="h1"
+                                    variant="h5"
+                                    color="inherit"
+                                    noWrap
+                                    className={classes.title}
+                                >
+                                    Weights Tracker
+                            </Typography>
+                                {
+                                    user &&
+                                    <IconButton
+                                        edge="end"
+                                        color="inherit"
+                                        onClick={(e) => setUserMenuAnchorEl(e.currentTarget)}
+                                    >
+                                        <PersonIcon />
+                                    </IconButton>}
+
+                                    <Button
+                                        onClick={(e) => setLangmenuAnchorEl(e.currentTarget)}
+                                    >
+                                        {
+                                            i18n.languages[0] === "cs" ?
+                                            <img 
+                                                src={czflag}
+                                                alt=""
+                                            /> :
+                                            <img 
+                                                src={ukflag}
+                                                alt=""
+                                            />
+                                        }
+                                    </Button>
+                                <UserMenu
+                                    anchorEl={userMenuAnchorEl}
+                                    handleClose={() => setUserMenuAnchorEl(null)}
+                                    setUser={setUser}
+                                />
+                                <LanguageSwitcher
+                                    anchorEl={langMenuAnchorEl}
+                                    handleClose={() => setLangmenuAnchorEl(null)}
+                                />
+                            </Toolbar>
+                        </AppBar>
+                        {
+                            isGettingStatus ?
+                                <CircularProgress
+                                    className={classes.spinner}
+                                />
+                                :
+                                <AppRouter
+                                    isDrawerOpen={isDrawerOpen}
+                                    setIsDrawerOpen={setIsDrawerOpen}
+                                    user={user}
+                                />}
+                    </AppContext.Provider >
+                </CookiesProvider>
         </div>
-    );
+    )
 }
 
 export default App

@@ -12,10 +12,12 @@ import { useCookies } from "react-cookie";
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 import { Alert } from "@material-ui/lab";
 import Chart from "../components/Chart"
+import { useTranslation } from "react-i18next";
 
 
 const Excercise = () => {
 
+    const { t } = useTranslation()
     const { exercises, records, recordsDispatch } = useContext(AppContext)
     let { id } = useParams();
     const [cookies] = useCookies()
@@ -76,7 +78,6 @@ const Excercise = () => {
     return (
         <>
             <Grid container spacing={3}>{
-                console.log(dataWithAvg)
             }
                 <Grid item lg={12} className={classes.exerciseTop}>
                     <Typography
@@ -91,22 +92,24 @@ const Excercise = () => {
                         onClick={() => setIsAddRecordModalOpen(true)}
                     >
                         <AddCircleIcon className={classes.addBtn} />
-                            Add new Record
-                        </Button>
+                        {t("pridat novy zaznam")}
+                    </Button>
                 </Grid>
                 {
                     (isRecordsLoading || hasError || records.length === 0) ?
                         <Grid item lg={12} component={Paper} className={classes.loadingCont}>
                             {
-                                records.length === 0 ?
-                                    <Alert severity="warning">
-                                        Nemáte žádné záznamy, přidejte nějaké.
-                                </Alert> :
-                                    isRecordsLoading ?
-                                        <CircularProgress /> :
+                                isRecordsLoading ?
+                                    <CircularProgress />
+                                    :
+                                    records.length === 0 ?
+                                        <Alert severity="warning">
+                                            {t("nemate zadne zaznamy")}
+                                        </Alert>
+                                        :
                                         <Alert severity="error">
-                                            Něco se pokazilo
-                                </Alert>
+                                            {t("errors.neco se nepovedlo")}
+                                        </Alert>
                             }
                         </Grid>
                         :
@@ -123,20 +126,20 @@ const Excercise = () => {
                                             <TableHead>
                                                 <TableRow>
                                                     <TableCell>
-                                                        Datum
-                                </TableCell>
+                                                        {t("datum")}
+                                                    </TableCell>
                                                     <TableCell>
-                                                        Váha
-                                </TableCell>
+                                                        {t("vaha")}
+                                                    </TableCell>
                                                     <TableCell>
-                                                        Reps
-                                </TableCell>
+                                                        {t("opakovani")}
+                                                    </TableCell>
                                                     <TableCell>
-                                                        Series
-                                </TableCell>
+                                                        {t("serie")}
+                                                    </TableCell>
                                                     <TableCell>
-                                                        Delete
-                                </TableCell>
+                                                        {t("odstranit")}
+                                                    </TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>

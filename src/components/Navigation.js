@@ -6,6 +6,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from 'clsx';
+import { useTranslation } from "react-i18next";
 
 
 const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
@@ -68,7 +69,7 @@ const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
     }));
 
     const classes = useStyles()
-
+    const { t } = useTranslation()
 
     return (
         <Drawer
@@ -96,8 +97,8 @@ const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
                             <DashboardIcon />
                         </ListItemIcon>
                         <ListItemText>
-                            Dashboard
-                </ListItemText>
+                            {t("dashboard")}
+                        </ListItemText>
                     </ListItem>
                 </NavLink>
                 <NavLink
@@ -108,8 +109,8 @@ const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
                             <FitnessCenterIcon />
                         </ListItemIcon>
                         <ListItemText>
-                            Exercises
-                </ListItemText>
+                            {t("cviky")}
+                        </ListItemText>
                     </ListItem>
                 </NavLink>
             </List>

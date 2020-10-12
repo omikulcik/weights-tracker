@@ -9,9 +9,11 @@ import AppContext from "../contexts/AppContext";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { Alert } from "@material-ui/lab";
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
+import { useTranslation } from "react-i18next";
 
 const Record = (props) => {
     const { recordsDispatch } = useContext(AppContext)
+    const { t } = useTranslation()
     const [isRecordDeletionRequested, setIsRecordDeletionRequested] = useState(false)
     const [cookies] = useCookies()
     const [hasError, setHasError] = useState(false)
@@ -31,7 +33,7 @@ const Record = (props) => {
                 hasError ?
                     <Alert
                         severity="error">
-                        Něco se pokazilo
+                        {t("errors.neco se nepovedlo")}
                     </Alert>
                     :
                     <TableRow>
@@ -58,7 +60,7 @@ const Record = (props) => {
                 open={isRecordDeletionRequested}
                 handleClose={() => setIsRecordDeletionRequested(false)}
                 isConfirmationInProgress={isRecordDeleting}
-                dialogText="Opravdu si přejete smazat tento záznam?"
+                dialogText={t("opravdu si prejete smazat tento zaznam?")}
                 handleConfirmation={() => requestRecordDeletion({ recordId: props.id }, cookies.token)}
             />
         </>

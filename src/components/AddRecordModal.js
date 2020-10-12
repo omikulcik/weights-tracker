@@ -11,6 +11,7 @@ import AppContext from "../contexts/AppContext";
 import { useCookies } from "react-cookie";
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 import { Alert } from "@material-ui/lab";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddRecordModal = (props) => {
-
+    const { t } = useTranslation()
     const classes = useStyles()
     const { recordsDispatch } = useContext(AppContext)
     const { control, handleSubmit, errors } = useForm()
@@ -80,7 +81,7 @@ const AddRecordModal = (props) => {
                                 <Controller
                                     as={<KeyboardDatePicker />}
                                     name="date"
-                                    label="Date"
+                                    label={t("datum")}
                                     control={control}
                                     disableToolbar
                                     variant="inline"
@@ -90,7 +91,7 @@ const AddRecordModal = (props) => {
                                     className={classes.muiInput}
                                     autoOk
                                     rules={{
-                                        required: "Required field",
+                                        required: t("povinne pole"),
                                     }}
                                     error={errors.date}
                                     helperText={errors.date?.message}
@@ -99,7 +100,7 @@ const AddRecordModal = (props) => {
                             <Controller
                                 as={<TextField />}
                                 name="weight"
-                                label="Weight"
+                                label={t("vaha")}
                                 type="number"
                                 control={control}
                                 defaultValue={1}
@@ -107,26 +108,26 @@ const AddRecordModal = (props) => {
                                 error={errors.weight}
                                 helperText={errors.weight?.message}
                                 rules={{
-                                    required: "Required field",
+                                    required: t("povinne pole"),
                                     min: {
                                         value: 0,
-                                        message: "Minimal value is 0"
+                                        message: `${t("minimalni hodnota je")} 0`
                                     }
                                 }}
                             />
                             <Controller
                                 as={<TextField />}
                                 name="reps"
-                                label="Repetitions"
+                                label={t("opakovani")}
                                 type="number"
                                 control={control}
                                 defaultValue={1}
                                 className={classes.muiInput}
                                 rules={{
-                                    required: "Required field",
+                                    required: t("povinne pole"),
                                     min: {
                                         value: 1,
-                                        message: "Minimal value is 1"
+                                        message: `${t("minimalni hodnota je")} 1`
                                     }
                                 }}
                                 error={errors.reps}
@@ -135,7 +136,7 @@ const AddRecordModal = (props) => {
                             <Controller
                                 as={<TextField />}
                                 name="series"
-                                label="Series"
+                                label={t("serie")}
                                 type="number"
                                 control={control}
                                 defaultValue={1}
@@ -144,7 +145,7 @@ const AddRecordModal = (props) => {
                                     required: "Required field",
                                     min: {
                                         value: 1,
-                                        message: "Minimal value is 1"
+                                        message: `${t("minimalni hodnota je")} 1`
                                     }
                                 }}
                                 error={errors.series}
@@ -154,7 +155,7 @@ const AddRecordModal = (props) => {
                                 <Alert
                                     severity="error"
                                 >
-                                    Něco se nepovedlo, zkuste to prosím znovu
+                                    {t("errors.neco se nepovedlo")}
                                 </Alert>
                             }
                             <Button
@@ -162,7 +163,9 @@ const AddRecordModal = (props) => {
                                 type="submit"
                                 color="primary"
                                 className={classes.submitBtn}
-                            >Save</Button>
+                            >
+                                {t("pridat")}
+                            </Button>
                         </form>}
             </Paper>
         </Modal>
