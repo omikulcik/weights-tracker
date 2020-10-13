@@ -30,7 +30,7 @@
     "odstranit": "Delete",
     "pridat novy cvik": "Add a new exercise",
     "nemate zadne cviky": "You don't have any exercises yet. Add some please",
-    "musi mit pozadavky hesla": "The password must contain at least one capital letter, one small leter and one number. It must not countain any special characters.",
+    "musi mit pozadavky hesla": "The password must be atleast 8 characters long, must contain at least one capital letter, one small leter and one number. It must not countain any special characters.",
     "heslo znovu": "Repeat password",
     "hesla se neshoduji": "The submited passwords do not match",
     "registrovat": "Sign up",
