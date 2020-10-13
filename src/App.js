@@ -123,7 +123,7 @@ const App = () => {
                                     onClick={() => setIsDrawerOpen(true)}
                                     className={clsx(
                                         classes.menuButton,
-                                        isDrawerOpen && classes.menuButtonHidden,
+                                        (isDrawerOpen || !user) && classes.menuButtonHidden,
                                     )}
                                 >
                                     <MenuIcon />

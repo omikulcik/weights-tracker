@@ -50,18 +50,20 @@ const Login = () => {
         },
         registrationTeaser: {
             fontWeight: "bold",
-            paddingBottom: "1rem",
-            "& a": {
-                textDecoration: "none",
-                color: theme.palette.primary.main
-            }
         },
         autoLogoutMesssage: {
             marginTop: "1rem"
         },
         regBtn:{
             display: "block",
-            marginTop: "1rem"
+            margin: "1rem auto 0 auto"
+        },
+        regHolder:{
+            paddingBottom: "1rem",
+            "& a": {
+                textDecoration: "none",
+                color: theme.palette.primary.main
+            }
         }
     }))
 
@@ -162,20 +164,22 @@ const Login = () => {
                                 </Button>
                             }
                         </div>
+                        <div className={classes.regHolder}>
                         <Typography
                             variant="body1"
                             component="p"
                             className={classes.registrationTeaser}
                         >
                             {t("nemate jeste ucet")}
-                                <Button
+                        </Typography>
+                        <Button
                                     variant="outlined"
                                     color="primary"
                                     className={classes.regBtn}
                                 >
                              <Link to="/register">{t("registrujte se zde")}</Link>
                              </Button>
-                        </Typography>
+                             </div>
                     </Container>
                 </form>
         }
