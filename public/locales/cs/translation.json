@@ -34,6 +34,7 @@
     "heslo znovu": "Heslo znovu pro potvrzení",
     "hesla se neshoduji": "Zadaná hesla se neshodují",
     "registrovat": "Registrovat",
+    "demo acc": "Prohlédnout demo účet",
     "errors": {
         "neco se nepovedlo": "Něco se nepovedlo, zkuste to prosím znovu.",
         "User with this email already exists": "Uživatel s tímto e-mailem již existuje",

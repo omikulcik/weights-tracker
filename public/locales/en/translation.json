@@ -34,6 +34,7 @@
     "heslo znovu": "Repeat password",
     "hesla se neshoduji": "The submited passwords do not match",
     "registrovat": "Sign up",
+    "demo acc": "Explore demo account",
     "errors": {
         "neco se nepovedlo": "Something went wrong, please try again.",
         "User with this email already exists": "User with this e-mail already exists",

@@ -57,6 +57,7 @@ const useStyles = makeStyles(theme => ({
         margin: "1rem auto 0 auto"
     },
     regHolder:{
+        textAlign: "center",
         paddingBottom: "1rem",
         "& a": {
             textDecoration: "none",
@@ -84,6 +85,13 @@ const Login = () => {
 
     const handleLogin = (data) => {
         requestLogin(data)
+    }
+
+    const handleLogDemoAcc = () =>{
+        requestLogin({
+            email: "demo@demo.cz",
+            password: "Demo1234"
+        })
     }
 
     return (
@@ -162,21 +170,31 @@ const Login = () => {
                             }
                         </div>
                         <div className={classes.regHolder}>
-                        <Typography
-                            variant="body1"
-                            component="p"
-                            className={classes.registrationTeaser}
-                        >
-                            {t("nemate jeste ucet")}
-                        </Typography>
-                        <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    className={classes.regBtn}
-                                >
-                             <Link to="/register">{t("registrujte se zde")}</Link>
-                             </Button>
-                             </div>
+                            <Typography
+                                variant="body1"
+                                component="p"
+                                className={classes.registrationTeaser}
+                            >
+                                {t("nemate jeste ucet")}
+                            </Typography>
+                            <Link to="/register">
+                                <Button
+                                        variant="outlined"
+                                        color="primary"
+                                        className={classes.regBtn}
+                                    >
+                                {t("registrujte se zde")}
+                                </Button>
+                             </Link>
+                             <Button
+                                        variant="outlined"
+                                        color="primary"
+                                        className={classes.regBtn}
+                                        onClick={handleLogDemoAcc}
+                                    >
+                                {t("demo acc")}
+                                </Button>
+                        </div>
                     </Container>
                 </form>
         }
