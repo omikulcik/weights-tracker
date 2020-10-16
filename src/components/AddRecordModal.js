@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         margin: "1rem auto"
     }
 
-}));
+}))
 
 const AddRecordModal = (props) => {
     const { t, i18n } = useTranslation()

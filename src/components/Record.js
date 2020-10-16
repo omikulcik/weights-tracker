@@ -26,25 +26,25 @@ const Record = (props) => {
 
     return (
         <>
-                    <TableRow>
-                        <TableCell>
-                            {moment(props.date).format("DD. MM. YYYY")}
-                        </TableCell>
-                        <TableCell>
-                            {props.weight}
-                        </TableCell>
-                        <TableCell>
-                            {props.reps}
-                        </TableCell>
-                        <TableCell>
-                            {props.series}
-                        </TableCell>
-                        <TableCell>
-                            <IconButton onClick={() => setIsRecordDeletionRequested(true)} >
-                                <DeleteIcon />
-                            </IconButton>
-                        </TableCell>
-                    </TableRow>
+            <TableRow>
+                <TableCell>
+                    {moment(props.date).format("DD. MM. YYYY")}
+                </TableCell>
+                <TableCell>
+                    {props.weight}
+                </TableCell>
+                <TableCell>
+                    {props.reps}
+                </TableCell>
+                <TableCell>
+                    {props.series}
+                </TableCell>
+                <TableCell>
+                    <IconButton onClick={() => setIsRecordDeletionRequested(true)} >
+                        <DeleteIcon />
+                    </IconButton>
+                </TableCell>
+            </TableRow>
             <ConfirmationDialog
                 open={isRecordDeletionRequested}
                 handleClose={() => setIsRecordDeletionRequested(false)}

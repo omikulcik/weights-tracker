@@ -8,65 +8,64 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from 'clsx';
 import { useTranslation } from "react-i18next";
 
+const drawerWidth = 240;
 
-const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
-
-    const drawerWidth = 240;
-
-    const useStyles = makeStyles((theme) => ({
-        menuButton: {
-            marginRight: 36,
+const useStyles = makeStyles((theme) => ({
+    menuButton: {
+        marginRight: 36,
+    },
+    menuButtonHidden: {
+        display: 'none',
+    },
+    drawerPaper: {
+        position: 'relative',
+        whiteSpace: 'nowrap',
+        width: drawerWidth,
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    drawerPaperClose: {
+        overflowX: 'hidden',
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        width: theme.spacing(7),
+        [theme.breakpoints.up('sm')]: {
+            width: theme.spacing(9),
         },
-        menuButtonHidden: {
-            display: 'none',
+        zIndex: theme.zIndex.drawer - 1,
+    },
+    paper: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
+    },
+    toolbarIcon: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: '0 8px',
+        ...theme.mixins.toolbar,
+    },
+    menuList: {
+        "& a": {
+            textDecoration: "none",
+            color: theme.palette.text.primary,
+            fontWeight: "bold"
         },
-        drawerPaper: {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-        },
-        drawerPaperClose: {
-            overflowX: 'hidden',
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            width: theme.spacing(7),
-            [theme.breakpoints.up('sm')]: {
-                width: theme.spacing(9),
-            },
-            zIndex: theme.zIndex.drawer - 1,
-        },
-        paper: {
-            padding: theme.spacing(2),
-            display: 'flex',
-            overflow: 'auto',
-            flexDirection: 'column',
-        },
-        toolbarIcon: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            padding: '0 8px',
-            ...theme.mixins.toolbar,
-        },
-        menuList: {
-            "& a": {
-                textDecoration: "none",
-                color: theme.palette.text.primary,
-                fontWeight: "bold"
-            },
-            "& a.active": {
-                "& .MuiSvgIcon-root": {
-                    fill: theme.palette.text.primary
-                }
+        "& a.active": {
+            "& .MuiSvgIcon-root": {
+                fill: theme.palette.text.primary
             }
         }
-    }));
+    }
+}))
+
+const Navigation = ({ isDrawerOpen, setIsDrawerOpen }) => {
 
     const classes = useStyles()
     const { t } = useTranslation()

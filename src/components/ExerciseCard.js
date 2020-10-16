@@ -12,39 +12,40 @@ import { useCookies } from "react-cookie";
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 import { useTranslation } from "react-i18next";
 
+
+
+const styles = makeStyles(theme => ({
+    roundButton: {
+        borderRadius: "50%",
+        padding: "6px",
+        minWidth: "auto"
+    },
+    exerciseName: {
+        display: "block",
+        flexBasis: "100%",
+        padding: "2rem 0",
+        fontWeight: "bold"
+    },
+    exerciseLink: {
+        marginLeft: "auto"
+    },
+    cardContent: {
+        display: "flex",
+        flexWrap: "wrap",
+        position: "relative"
+    },
+    deleteIcon: {
+        position: "absolute",
+        top: "0.5rem",
+        right: "0.6rem",
+        cursor: "pointer"
+    },
+    exerciseSpec: {
+        flexBasis: "100%"
+    }
+}))
+
 const ExerciseCard = (props) => {
-
-    const styles = makeStyles(theme => ({
-        roundButton: {
-            borderRadius: "50%",
-            padding: "6px",
-            minWidth: "auto"
-        },
-        exerciseName: {
-            display: "block",
-            flexBasis: "100%",
-            padding: "2rem 0",
-            fontWeight: "bold"
-        },
-        exerciseLink: {
-            marginLeft: "auto"
-        },
-        cardContent: {
-            display: "flex",
-            flexWrap: "wrap",
-            position: "relative"
-        },
-        deleteIcon: {
-            position: "absolute",
-            top: "0.5rem",
-            right: "0.6rem",
-            cursor: "pointer"
-        },
-        exerciseSpec: {
-            flexBasis: "100%"
-        }
-    }))
-
     const classes = styles()
     const { t } = useTranslation()
     const { exercisesDispatch } = useContext(AppContext)

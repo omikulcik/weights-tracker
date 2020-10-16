@@ -12,28 +12,27 @@ import { useCookies } from "react-cookie";
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 import { useTranslation } from "react-i18next";
 
-
+const styles = makeStyles(theme => ({
+    exercisesHead: {
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "space-between",
+        "& button": {
+            height: "2.5rem",
+            fontWeight: "bold"
+        }
+    },
+    addBtn: {
+        marginRight: "1rem"
+    },
+    spinner: {
+        margin: "25% auto"
+    }
+}))
 
 const Excercises = () => {
 
-    const styles = makeStyles(theme => ({
-        exercisesHead: {
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-            "& button": {
-                height: "2.5rem",
-                fontWeight: "bold"
-            }
-        },
-        addBtn: {
-            marginRight: "1rem"
-        },
-        spinner: {
-            margin: "25% auto"
-        }
-    }))
     const classes = styles()
     const { t } = useTranslation()
     const [isModalOpen, setIsModalOpen] = useState(false)

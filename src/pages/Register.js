@@ -9,53 +9,53 @@ import { Redirect, useHistory } from "react-router"
 import { register } from "../actions/userActions"
 import AppContext from "../contexts/AppContext"
 
-const Register = () => {
-    const useStyles = makeStyles(theme => ({
-        soloLine: {
-            "& .MuiInputBase-root": {
-                width: "100%"
-            },
-            display: "block",
-            marginTop: "1rem",
-            width: "80%",
-            maxWidth: "21rem"
+const useStyles = makeStyles(theme => ({
+    soloLine: {
+        "& .MuiInputBase-root": {
+            width: "100%"
         },
-        container: {
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center"
-        },
-        loginBtn: {
-            width: "auto"
-        },
-        btnHolder: {
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            padding: "2rem 0",
-            "& button": {
-                fontWeight: "bold"
-            }
-        },
-        pageTitle: {
-            width: "100%",
-            fontWeight: "bold",
-            textAlign: "center",
-            marginTop: "1rem"
-        },
-        error: {
-            marginTop: "1rem"
-        },
-        registrationTeaser: {
-            fontWeight: "bold",
-            paddingBottom: "1rem",
-            "& a": {
-                textDecoration: "none",
-                color: theme.palette.primary
-            }
+        display: "block",
+        marginTop: "1rem",
+        width: "80%",
+        maxWidth: "21rem"
+    },
+    container: {
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center"
+    },
+    loginBtn: {
+        width: "auto"
+    },
+    btnHolder: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        padding: "2rem 0",
+        "& button": {
+            fontWeight: "bold"
         }
-    }))
+    },
+    pageTitle: {
+        width: "100%",
+        fontWeight: "bold",
+        textAlign: "center",
+        marginTop: "1rem"
+    },
+    error: {
+        marginTop: "1rem"
+    },
+    registrationTeaser: {
+        fontWeight: "bold",
+        paddingBottom: "1rem",
+        "& a": {
+            textDecoration: "none",
+            color: theme.palette.primary
+        }
+    }
+}))
 
+const Register = () => {
     const { t } = useTranslation()
     const classes = useStyles()
     const [, setCookie] = useCookies()

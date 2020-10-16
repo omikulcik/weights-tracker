@@ -4,15 +4,15 @@ import { Paper, makeStyles } from "@material-ui/core"
 import moment from "moment"
 import { useTranslation } from "react-i18next";
 
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        padding: "2rem 2rem 2rem 0"
+    }
+}))
+
 const Chart = (props) => {
-    const useStyles = makeStyles((theme) => ({
-        paper: {
-            padding: "2rem 2rem 2rem 0"
-        }
-    }))
     const classes = useStyles()
     const {t} = useTranslation()
-
 
     return (
         <Paper

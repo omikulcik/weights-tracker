@@ -10,64 +10,63 @@ import { Link } from "react-router-dom"
 import { logIn } from "../actions/userActions"
 import AppContext from "../contexts/AppContext"
 
+const useStyles = makeStyles(theme => ({
+    soloLine: {
+        "& .MuiInputBase-root": {
+            width: "100%"
+        },
+        display: "block",
+        marginTop: "1rem",
+        width: "80%",
+        maxWidth: "21rem"
+    },
+    container: {
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center"
+    },
+    loginBtn: {
+        width: "auto"
+    },
+    btnHolder: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        padding: "2rem 0",
+        "& button": {
+            fontWeight: "bold"
+        }
+    },
+    pageTitle: {
+        width: "100%",
+        fontWeight: "bold",
+        textAlign: "center",
+        marginTop: "1rem"
+    },
+    error: {
+        marginTop: "1rem"
+    },
+    registrationTeaser: {
+        fontWeight: "bold",
+    },
+    autoLogoutMesssage: {
+        marginTop: "1rem"
+    },
+    regBtn:{
+        display: "block",
+        margin: "1rem auto 0 auto"
+    },
+    regHolder:{
+        paddingBottom: "1rem",
+        "& a": {
+            textDecoration: "none",
+            color: theme.palette.primary.main
+        }
+    }
+}))
+
 const Login = () => {
     const { t } = useTranslation()
-    const useStyles = makeStyles(theme => ({
-        soloLine: {
-            "& .MuiInputBase-root": {
-                width: "100%"
-            },
-            display: "block",
-            marginTop: "1rem",
-            width: "80%",
-            maxWidth: "21rem"
-        },
-        container: {
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center"
-        },
-        loginBtn: {
-            width: "auto"
-        },
-        btnHolder: {
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            padding: "2rem 0",
-            "& button": {
-                fontWeight: "bold"
-            }
-        },
-        pageTitle: {
-            width: "100%",
-            fontWeight: "bold",
-            textAlign: "center",
-            marginTop: "1rem"
-        },
-        error: {
-            marginTop: "1rem"
-        },
-        registrationTeaser: {
-            fontWeight: "bold",
-        },
-        autoLogoutMesssage: {
-            marginTop: "1rem"
-        },
-        regBtn:{
-            display: "block",
-            margin: "1rem auto 0 auto"
-        },
-        regHolder:{
-            paddingBottom: "1rem",
-            "& a": {
-                textDecoration: "none",
-                color: theme.palette.primary.main
-            }
-        }
-    }))
-
-
     const classes = useStyles()
     const { control, handleSubmit, errors } = useForm({ nativeValidation: true })
     const { setUser, user, hasBeenLoggedOut } = useContext(AppContext)

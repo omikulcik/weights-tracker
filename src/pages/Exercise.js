@@ -15,37 +15,36 @@ import Chart from "../components/Chart"
 import { useTranslation } from "react-i18next";
 import moment from "moment"
 
-const Excercise = () => {
+const styles = makeStyles(theme => ({
+    addBtn: {
+        marginRight: "1rem"
+    },
+    exerciseTop: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        "& button": {
+            height: "2.5rem",
+            fontWeight: "bold"
+        }
+    },
+    loadingCont: {
+        display: "flex",
+        justifyContent: "center",
+        paddingTop: "2rem",
+        paddingBottom: "2rem"
+    }
+}))
 
+const Excercise = () => {
     const { t } = useTranslation()
     const { exercises, records, recordsDispatch } = useContext(AppContext)
     let { id } = useParams();
     const [cookies] = useCookies()
     const [dataWithAvg, setDataWithAvg] = useState([])
     const exc = exercises.find(e => e.id === parseInt(id))
-    const styles = makeStyles(theme => ({
-        addBtn: {
-            marginRight: "1rem"
-        },
-        exerciseTop: {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            "& button": {
-                height: "2.5rem",
-                fontWeight: "bold"
-            }
-        },
-        loadingCont: {
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: "2rem",
-            paddingBottom: "2rem"
-        }
-    }))
     const classes = styles()
-
     const [isAddRecordModalOpen, setIsAddRecordModalOpen] = useState(false)
     const checkAutoLogout = useAutomaticLogoutCheck()
     const { loading: isRecordsLoading, error: getRecordsError } = useRequest(getRecords, {

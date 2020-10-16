@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
         display: "block",
         margin: "1rem auto"
     }
-}));
+}))
+
 const AddExerciseModal = (props) => {
     const { t } = useTranslation()
     const { exercisesDispatch } = useContext(AppContext)
