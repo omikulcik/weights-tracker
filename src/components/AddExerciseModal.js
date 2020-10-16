@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext} from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import { Modal, Paper, TextField, Button, CircularProgress } from "@material-ui/core"
 import { useForm, Controller } from "react-hook-form";
@@ -29,10 +29,9 @@ const AddExerciseModal = (props) => {
     const { exercisesDispatch } = useContext(AppContext)
     const classes = useStyles()
     const { handleSubmit, control, errors } = useForm()
-    const [hasError, setHasError] = useState(false)
     const [cookies] = useCookies()
     const checkAutoLogout = useAutomaticLogoutCheck()
-    const { loading: isExerciseAdding, run: requestAddExercise } = useRequest(addExercise, {
+    const { loading: isExerciseAdding, run: requestAddExercise, error: addExerciseError } = useRequest(addExercise, {
         manual: true,
         onSuccess: (res) => {
             exercisesDispatch(finishAddExercise(res.data))
@@ -40,7 +39,6 @@ const AddExerciseModal = (props) => {
         },
         onError: (err) => {
             checkAutoLogout(err)
-            setHasError(true)
         }
     })
 
@@ -54,13 +52,11 @@ const AddExerciseModal = (props) => {
         <Modal
             open={props.isModalOpen}
             onClose={() => props.setIsModalOpen(false)}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
             className={classes.modal}
         >
             <Paper className={classes.paper}>
                 {
-                    hasError ?
+                    addExerciseError ?
                         <Alert severity="error">
                             {t("errors.neco se nepovedlo")}
                         </Alert> :

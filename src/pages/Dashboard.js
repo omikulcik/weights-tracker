@@ -1,7 +1,7 @@
 import useRequest from "@ahooksjs/use-request"
 import { Grid, makeStyles, Paper, Typography, CircularProgress } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect} from "react"
 import { useCookies } from "react-cookie"
 import CountUp from "react-countup"
 import { useTranslation } from "react-i18next"
@@ -34,11 +34,9 @@ const Dashboard = () => {
     const { setHasBeenLoggedOut } = useContext(AppContext)
     const [cookies] = useCookies()
     const checkAutoLogout = useAutomaticLogoutCheck()
-    const [hasApiError, sethasApiError] = useState(false)
-    const { loading: isDashboardDataLoading, data } = useRequest(getDashboardData, {
+    const { loading: isDashboardDataLoading, data, error: getDashboardError } = useRequest(getDashboardData, {
         defaultParams: { token: cookies.token },
         onError: (err) => {
-            sethasApiError(true)
             checkAutoLogout(err)
         }
     })
@@ -62,7 +60,7 @@ const Dashboard = () => {
                         className={classes.spinner}
                     />
                     :
-                    hasApiError ?
+                    getDashboardError ?
                         <Alert
                             severity="error">
                             {t("errors.neco se nepovedlo")}

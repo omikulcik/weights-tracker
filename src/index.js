@@ -5,7 +5,6 @@ import * as serviceWorker from './serviceWorker';
 import CssBaseline from "@material-ui/core/CssBaseline"
 import "./utils/i18next"
 import { CircularProgress } from '@material-ui/core';
-/* import { debugContextDevtool } from 'react-context-devtool'; */
 
 const root = document.getElementById('root')
 ReactDOM.render(
@@ -20,5 +19,4 @@ ReactDOM.render(
   </React.StrictMode>,
   root
 );
-/* debugContextDevtool(root) */
 serviceWorker.unregister();

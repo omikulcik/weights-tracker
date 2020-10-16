@@ -1,7 +1,7 @@
 import useRequest from "@ahooksjs/use-request"
 import { Button, TextField, Container, Paper, makeStyles, CircularProgress } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import React, { useContext, useState } from "react"
+import React, { useContext} from "react"
 import { useCookies } from "react-cookie"
 import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -62,8 +62,7 @@ const Register = () => {
     const { control, handleSubmit, errors, getValues } = useForm({ nativeValidation: true })
     const { setUser, user } = useContext(AppContext)
     const history = useHistory()
-    const [apiError, setApiError] = useState(false)
-    const { run: requestRegistration, loading: isRegistering } = useRequest(register, {
+    const { run: requestRegistration, loading: isRegistering, error: registerError } = useRequest(register, {
         manual: true,
         onSuccess: (res) => {
             setCookie("token", res.data.token)
@@ -72,8 +71,7 @@ const Register = () => {
                 uuid: res.data.uuid
             })
             history.push("/")
-        },
-        onError: (err) => setApiError(err.response.data)
+        }
     })
 
     const handleRegistrationSubmit = (data) => {
@@ -146,11 +144,11 @@ const Register = () => {
                                 error={errors.repeatPassword}
                                 helperText={errors.repeatPassword?.type === "notSame" ? t("hesla se neshoduji") : errors.repeatPassword?.message}
                             />
-                            {apiError &&
+                            {registerError &&
                                 <Alert
                                     className={classes.error}
                                     severity="error">
-                                    {t(`errors.${apiError.message}`)}
+                                    {t(`errors.${registerError.response.data.message}`)}
                                 </Alert>}
                             <div className={classes.btnHolder}>
                                 {

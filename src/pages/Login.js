@@ -1,7 +1,7 @@
 import useRequest from "@ahooksjs/use-request"
 import { Button, Container, Paper, TextField, makeStyles, Typography, CircularProgress } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import React, { useContext, useState } from "react"
+import React, { useContext} from "react"
 import { useCookies } from "react-cookie"
 import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -72,8 +72,7 @@ const Login = () => {
     const { control, handleSubmit, errors } = useForm({ nativeValidation: true })
     const { setUser, user, hasBeenLoggedOut } = useContext(AppContext)
     const [, setCookie] = useCookies()
-    const [apiError, setApiError] = useState()
-    const { run: requestLogin, loading: isLoggingIn } = useRequest(logIn, {
+    const { run: requestLogin, loading: isLoggingIn, error: loginError } = useRequest(logIn, {
         manual: true,
         onSuccess: (result) => {
             setCookie("token", result.data.token)
@@ -81,8 +80,7 @@ const Login = () => {
                 uuid: result.uuid,
                 email: result.email,
             })
-        },
-        onError: (err) => setApiError(err.response.data),
+        }
     })
 
     const handleLogin = (data) => {
@@ -144,11 +142,11 @@ const Login = () => {
                             error={errors.password}
                             helperText={errors.password?.message}
                         />
-                        {apiError &&
+                        {loginError &&
                             <Alert
                                 className={classes.error}
                                 severity="error">
-                                {t(`errors.${apiError.message}`)}
+                                {t(`errors.${loginError.response.data.message}`)}
                             </Alert>}
                         <div className={classes.btnHolder}>
                             {isLoggingIn ?

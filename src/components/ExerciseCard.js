@@ -49,16 +49,14 @@ const ExerciseCard = (props) => {
     const { t } = useTranslation()
     const { exercisesDispatch } = useContext(AppContext)
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-    const [hasDeletionError, setHasDeletionError] = useState(false)
     const [cookies] = useCookies()
     const checkAutoLogout = useAutomaticLogoutCheck()
 
-    const { loading: isExerciseDeleting, run: requestExerciseDeletion } = useRequest(deleteExercise, {
+    const { loading: isExerciseDeleting, run: requestExerciseDeletion, error: deletionError } = useRequest(deleteExercise, {
         manual: true,
         onSuccess: () => exercisesDispatch(finishDeleteExercise({ id: props.id })),
         onError: (err) => {
             checkAutoLogout(err)
-            setHasDeletionError(true)
         }
     })
 
@@ -96,7 +94,7 @@ const ExerciseCard = (props) => {
                     handleClose={() => setIsDeleteDialogOpen(false)}
                     dialogText={`${t("opravdu si prejete smazat cvik s nazvem")} ${props.name}`}
                     isConfirmationInProgress={isExerciseDeleting}
-                    confirmationError={hasDeletionError}
+                    confirmationError={deletionError}
                 />
             </Card>
         </Grid>

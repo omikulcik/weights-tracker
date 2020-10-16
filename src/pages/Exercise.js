@@ -47,16 +47,14 @@ const Excercise = () => {
     const classes = styles()
 
     const [isAddRecordModalOpen, setIsAddRecordModalOpen] = useState(false)
-    const [hasError, setHasError] = useState(false)
     const checkAutoLogout = useAutomaticLogoutCheck()
-    const { loading: isRecordsLoading } = useRequest(getRecords, {
+    const { loading: isRecordsLoading, error: getRecordsError } = useRequest(getRecords, {
         defaultParams: {
             exerciseId: parseInt(id),
             token: cookies.token
         },
         onSuccess: (result) => recordsDispatch(finishGetRecords(result.data)),
         onError: (err) => {
-            setHasError(true)
             checkAutoLogout(err)
         }
     })
@@ -96,7 +94,7 @@ const Excercise = () => {
                     </Button>
                 </Grid>
                 {
-                    (isRecordsLoading || hasError || records.length === 0) ?
+                    (isRecordsLoading || getRecordsError || records.length === 0) ?
                         <Grid item xs={12} component={Paper} className={classes.loadingCont}>
                             {
                                 isRecordsLoading ?

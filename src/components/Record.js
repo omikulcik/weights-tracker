@@ -7,7 +7,6 @@ import { deleteRecord, finishDeleteRecord } from "../actions/recordsActions";
 import { useCookies } from "react-cookie";
 import AppContext from "../contexts/AppContext";
 import ConfirmationDialog from "./ConfirmationDialog";
-import { Alert } from "@material-ui/lab";
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck";
 import { useTranslation } from "react-i18next";
 
@@ -16,26 +15,17 @@ const Record = (props) => {
     const { t } = useTranslation()
     const [isRecordDeletionRequested, setIsRecordDeletionRequested] = useState(false)
     const [cookies] = useCookies()
-    const [hasError, setHasError] = useState(false)
     const checkAutoLogout = useAutomaticLogoutCheck()
-    const { run: requestRecordDeletion, loading: isRecordDeleting } = useRequest(deleteRecord, {
+    const { run: requestRecordDeletion, loading: isRecordDeleting, error: deletionError} = useRequest(deleteRecord, {
         manual: true,
         onSuccess: (res, params) => recordsDispatch(finishDeleteRecord({ recordId: params[0].recordId })),
         onError: (err) => {
-            setHasError(true)
             checkAutoLogout(err)
         }
     })
 
     return (
         <>
-            {
-                hasError ?
-                    <Alert
-                        severity="error">
-                        {t("errors.neco se nepovedlo")}
-                    </Alert>
-                    :
                     <TableRow>
                         <TableCell>
                             {moment(props.date).format("DD. MM. YYYY")}
@@ -55,13 +45,13 @@ const Record = (props) => {
                             </IconButton>
                         </TableCell>
                     </TableRow>
-            }
             <ConfirmationDialog
                 open={isRecordDeletionRequested}
                 handleClose={() => setIsRecordDeletionRequested(false)}
                 isConfirmationInProgress={isRecordDeleting}
                 dialogText={t("opravdu si prejete smazat tento zaznam?")}
                 handleConfirmation={() => requestRecordDeletion({ recordId: props.id }, cookies.token)}
+                confirmationError={deletionError}
             />
         </>
     )

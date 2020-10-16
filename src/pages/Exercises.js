@@ -37,15 +37,13 @@ const Excercises = () => {
     const classes = styles()
     const { t } = useTranslation()
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [hasExercisesLoadingError, setHasExercisesLoadingError] = useState(false)
     const { exercises, exercisesDispatch } = useContext(AppContext)
     const [cookies] = useCookies()
     const checkAutoLogout = useAutomaticLogoutCheck()
-    const { loading: isExercisesLoading } = useRequest(getExercises, {
+    const { loading: isExercisesLoading, error: getExercisesError } = useRequest(getExercises, {
         onSuccess: (result) => exercisesDispatch(finishGetExercises(result.data)),
         onError: (err) => {
             checkAutoLogout(err)
-            setHasExercisesLoadingError(true)
         },
         defaultParams: {
             token: cookies.token
@@ -74,7 +72,7 @@ const Excercises = () => {
             {
                 isExercisesLoading ?
                     <CircularProgress className={classes.spinner} /> :
-                    hasExercisesLoadingError ?
+                        getExercisesError ?
                         <Alert severity="error">
                             {t("errors.neco se nepovedlo")}
                         </Alert> :
