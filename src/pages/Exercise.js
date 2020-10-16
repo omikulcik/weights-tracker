@@ -1,8 +1,7 @@
-import { Button, Grid, Paper, Table, TableCell, TableContainer, TableHead, Typography, TableBody, TableRow, CircularProgress, } from "@material-ui/core"
+import { Grid, Paper, Table, TableCell, TableContainer, TableHead, TableBody, TableRow, CircularProgress, } from "@material-ui/core"
 import React, { useContext, useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import AppContext from "../contexts/AppContext"
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { makeStyles } from "@material-ui/styles";
 import AddRecordModal from "../components/AddRecordModal";
 import useRequest from "@ahooksjs/use-request";
@@ -14,21 +13,9 @@ import { Alert } from "@material-ui/lab";
 import Chart from "../components/Chart"
 import { useTranslation } from "react-i18next";
 import moment from "moment"
+import SectionHeader from "../components/SectionHeader";
 
 const styles = makeStyles(theme => ({
-    addBtn: {
-        marginRight: "1rem"
-    },
-    exerciseTop: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        "& button": {
-            height: "2.5rem",
-            fontWeight: "bold"
-        }
-    },
     loadingCont: {
         display: "flex",
         justifyContent: "center",
@@ -74,24 +61,12 @@ const Excercise = () => {
 
     return (
         <>
-            <Grid container spacing={3}>{
-            }
-                <Grid item xs={12} className={classes.exerciseTop}>
-                    <Typography
-                        variant="h3"
-                        component="h3"
-                    >
-                        {exc.name}
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => setIsAddRecordModalOpen(true)}
-                    >
-                        <AddCircleIcon className={classes.addBtn} />
-                        {t("pridat novy zaznam")}
-                    </Button>
-                </Grid>
+            <Grid container spacing={3}>
+                <SectionHeader 
+                    btnText={t("pridat novy zaznam")}
+                    btnHandler={() => setIsAddRecordModalOpen(true)}
+                    heading={exc.name}
+                />
                 {
                     (isRecordsLoading || getRecordsError || records.length === 0) ?
                         <Grid item xs={12} component={Paper} className={classes.loadingCont}>

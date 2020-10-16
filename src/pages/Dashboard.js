@@ -9,26 +9,24 @@ import { getDashboardData } from "../actions/dashBoardActions"
 import AppContext from "../contexts/AppContext"
 import useAutomaticLogoutCheck from "../utils/useAutomaticLogoutCheck"
 
-
+const useStyles = makeStyles((theme) => ({
+    dashDataCol: {
+        textAlign: "center"
+    },
+    spinner: {
+        margin: "2rem auto",
+        display: "block"
+    },
+    paper: {
+        paddingTop: "3rem",
+        paddingBottom: "3rem"
+    },
+    heading: {
+        marginBottom: "2rem"
+    }
+}))
 
 const Dashboard = () => {
-    const useStyles = makeStyles((theme) => ({
-        dashDataCol: {
-            textAlign: "center"
-        },
-        spinner: {
-            margin: "2rem auto",
-            display: "block"
-        },
-        paper: {
-            paddingTop: "3rem",
-            paddingBottom: "3rem"
-        },
-        heading: {
-            marginBottom: "2rem"
-        }
-    }))
-
     const { t } = useTranslation()
     const classes = useStyles()
     const { setHasBeenLoggedOut } = useContext(AppContext)
